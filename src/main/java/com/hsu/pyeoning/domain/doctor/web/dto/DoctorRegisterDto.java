@@ -1,4 +1,4 @@
-package com.hsu.pyeoning.domain.doctor.dto;
+package com.hsu.pyeoning.domain.doctor.web.dto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
