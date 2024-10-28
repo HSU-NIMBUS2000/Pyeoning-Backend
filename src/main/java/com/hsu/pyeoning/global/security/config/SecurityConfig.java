@@ -1,6 +1,7 @@
 package com.hsu.pyeoning.global.security.config;
 
 import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
+import com.hsu.pyeoning.global.security.jwt.filter.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,10 +26,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/doctor/register", "/api/doctor/login").permitAll() // 등록 및 회원가입 요청 제외
+                        .requestMatchers("/api/doctor/register", "/api/doctor/login").permitAll() // 등록 및 로그인 요청 제외
                         .anyRequest().authenticated()) // 그 외 요청은 인증 필요
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
