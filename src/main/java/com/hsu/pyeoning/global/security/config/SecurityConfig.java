@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/doctor/register", "/api/doctor/login").permitAll() // 등록 및 로그인 요청 제외
+                        .requestMatchers("/api/doctor/register", "/api/doctor/login", "/api/doctor/checkLicense").permitAll() // 등록 및 로그인 요청 제외
                         .anyRequest().authenticated()) // 그 외 요청은 인증 필요
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
