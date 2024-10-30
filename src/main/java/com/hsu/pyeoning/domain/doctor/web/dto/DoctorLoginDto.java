@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DoctorLoginDto {
-    @NotNull(message = "면허번호를 입력해주세요.")
+    @NotNull(message = "면허 번호를 입력해주세요.")
     private Long doctorLicense;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
