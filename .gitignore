@@ -188,4 +188,4 @@ Temporary Items
 # End of https://www.toptal.com/developers/gitignore/api/java,intellij,macos
 
 # application.properties
-application.properties
+application.properties.idea/
