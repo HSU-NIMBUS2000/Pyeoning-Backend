@@ -3,11 +3,14 @@ package com.hsu.pyeoning.domain.doctor.service;
 import com.hsu.pyeoning.domain.doctor.entity.Doctor;
 import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
 import com.hsu.pyeoning.domain.doctor.web.dto.CheckLicenseDto;
+import com.hsu.pyeoning.domain.doctor.web.dto.DoctorLoginDto;
 import com.hsu.pyeoning.domain.doctor.web.dto.DoctorRegisterDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
+import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 의사 등록
     public ResponseEntity<CustomApiResponse<?>> registDoctor(DoctorRegisterDto dto) {
@@ -49,6 +53,28 @@ public class DoctorServiceImpl implements DoctorService {
 
     public boolean isLicenseNumberDuplicate(Long licenseNumber) {
         return doctorRepository.findByDoctorLicense(licenseNumber).isPresent();
+    }
+
+    // 의사 로그인
+    public ResponseEntity<CustomApiResponse<?>> doctorLogin(DoctorLoginDto dto) {
+        // 면허 번호로 의사 찾기
+        Doctor doctor = doctorRepository.findByDoctorLicense(dto.getDoctorLicense())
+                .orElse(null);
+
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(CustomApiResponse.createFailWithout(404, "면허 번호에 해당하는 의사가 없습니다."));
+        }
+
+        // 비밀번호 확인
+        if (!passwordEncoder.matches(dto.getDoctorPassword(), doctor.getDoctorPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(CustomApiResponse.createFailWithout(401, "비밀번호가 일치하지 않습니다."));
+        }
+
+        // 토큰 생성후 성공 응답 반환
+        String token = jwtTokenProvider.createToken(String.valueOf(doctor.getDoctorLicense()));
+        return ResponseEntity.ok(CustomApiResponse.createSuccess(200, token, "의사 로그인에 성공했습니다."));
     }
 
 }
