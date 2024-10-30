@@ -17,7 +17,7 @@ public class DoctorRegisterDto {
     @NotBlank(message = "소속병원을 입력해주세요.")
     private String doctorHospital;
 
-    @NotNull(message = "면허번호를 입력해주세요.")
+    @NotNull(message = "면허 번호를 입력해주세요.")
     private Long doctorLicense;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")

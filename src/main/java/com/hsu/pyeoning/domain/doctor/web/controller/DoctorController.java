@@ -2,6 +2,7 @@ package com.hsu.pyeoning.domain.doctor.web.controller;
 
 import com.hsu.pyeoning.domain.doctor.service.DoctorServiceImpl;
 import com.hsu.pyeoning.domain.doctor.web.dto.CheckLicenseDto;
+import com.hsu.pyeoning.domain.doctor.web.dto.DoctorLoginDto;
 import com.hsu.pyeoning.domain.doctor.web.dto.DoctorRegisterDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import jakarta.validation.Valid;
@@ -31,6 +32,9 @@ public class DoctorController {
         return doctorService.checkLicenseNumber(dto);
     }
 
-
+    @PostMapping("/login")
+    public ResponseEntity<CustomApiResponse<?>> login(@RequestBody DoctorLoginDto dto) {
+        return doctorService.doctorLogin(dto);
+    }
 
 }
