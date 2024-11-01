@@ -139,7 +139,11 @@ public class PatientServiceImpl implements PatientService {
         String doctorLicenseStr = authentication.getName();
         Long doctorLicense = Long.valueOf(doctorLicenseStr);
         Doctor doctor = doctorRepository.findByDoctorLicense(doctorLicense)
-                .orElseThrow(() -> new RuntimeException("의사 정보를 찾을 수 없습니다."));
+                .orElse(null);
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "의사 정보를 찾을 수 없습니다."));
+        }
         PageRequest pageRequest = PageRequest.of(page - 1, size);
         Page<Patient> patientPage = patientRepository.findByDoctorId(doctor, pageRequest);
         if (patientPage.hasContent()) {
