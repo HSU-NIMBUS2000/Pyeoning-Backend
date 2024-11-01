@@ -50,6 +50,9 @@ public class PatientServiceImpl implements PatientService {
                 .patientEmail(dto.getPatientEmail())
                 .patientCode(generatePatientCode())
                 .doctorId(doctor)
+                .pyeoningDisease(dto.getPyeoningDisease())
+                .pyeoningPrompt(dto.getPyeoningPrompt())
+                .pyeoningSpecial(dto.getPyeoningSpecial())
                 .build();
 
         patientRepository.save(patient);
