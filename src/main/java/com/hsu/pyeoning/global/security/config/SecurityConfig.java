@@ -35,7 +35,12 @@ public class SecurityConfig {
                 // 요청 권한 설정
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll() // H2 콘솔 접근 허용
-                        .requestMatchers("/api/doctor/register", "/api/doctor/login", "/api/doctor/checkLicense").permitAll() // 등록 및 로그인 요청 허용
+                        .requestMatchers(
+                            "/api/doctor/register", 
+                            "/api/doctor/login", 
+                            "/api/doctor/checkLicense",
+                            "/api/patient/login"
+                        ).permitAll() 
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
                 
