@@ -1,6 +1,6 @@
 package com.hsu.pyeoning.domain.patient.web.dto;
 
-import com.hsu.pyeoning.domain.patient.entity.Gender;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
