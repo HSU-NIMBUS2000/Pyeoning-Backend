@@ -5,6 +5,7 @@ import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
+import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.domain.doctor.entity.Doctor;
 import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
@@ -64,6 +65,46 @@ public class PatientServiceImpl implements PatientService {
 
         String token = jwtTokenProvider.createToken(patient.getPatientCode());
         return ResponseEntity.ok(new CustomApiResponse<>(200, token, "로그인에 성공했습니다."));
+    }
+
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> modifyPrompt(Long patientId, ModifyPromptDto dto) {
+        String doctorLicenseStr = SecurityContextHolder.getContext().getAuthentication().getName();
+        Long doctorLicense = Long.parseLong(doctorLicenseStr);
+        Doctor doctor = doctorRepository.findByDoctorLicense(doctorLicense)
+                .orElseThrow(() -> new RuntimeException("의사 정보를 찾을 수 없습니다."));
+
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new RuntimeException("해당 ID의 환자를 찾을 수 없습니다."));
+
+        if (!patient.getDoctorId().getDoctorId().equals(doctor.getDoctorId())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "해당 의사는 해당 환자의 담당 의사가 아닙니다."));
+        }
+
+        if (dto.getPatientName() != null) {
+            patient.setPatientName(dto.getPatientName());
+        }
+        if (dto.getPatientBirth() != null) {
+            patient.setPatientBirth(dto.getPatientBirth());
+        }
+        if (dto.getPyeoningDisease() != null) {
+            patient.setPyeoningDisease(dto.getPyeoningDisease());
+        }
+        if (dto.getPyeoningPrompt() != null) {
+            patient.setPyeoningPrompt(dto.getPyeoningPrompt());
+        }
+        if (dto.getPyeoningSpecial() != null) {
+            patient.setPyeoningSpecial(dto.getPyeoningSpecial());
+        }
+
+        patientRepository.save(patient);
+
+        return ResponseEntity.ok(new CustomApiResponse<>(
+                HttpStatus.OK.value(),
+                dto,
+                "환자 정보 수정에 성공했습니다."
+        ));
     }
 
     private String generatePatientCode() {

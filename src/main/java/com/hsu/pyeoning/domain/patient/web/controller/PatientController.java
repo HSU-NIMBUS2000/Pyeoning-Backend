@@ -3,6 +3,7 @@ package com.hsu.pyeoning.domain.patient.web.controller;
 import com.hsu.pyeoning.domain.patient.service.PatientService;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
+import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,12 @@ public class PatientController {
     @PostMapping("/login")
     public ResponseEntity<CustomApiResponse<?>> patientLogin(@Valid @RequestBody PatientLoginDto dto) {
         return patientService.patientLogin(dto);
+    }
+
+    @PutMapping("/{patientId}/modifyPrompt")
+    public ResponseEntity<CustomApiResponse<?>> modifyPrompt(
+            @PathVariable Long patientId,
+            @Valid @RequestBody ModifyPromptDto dto) {
+        return patientService.modifyPrompt(patientId, dto);
     }
 }
