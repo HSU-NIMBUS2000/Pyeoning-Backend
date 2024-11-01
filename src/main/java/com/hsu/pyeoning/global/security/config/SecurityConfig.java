@@ -26,12 +26,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                // CSRF 보호 비활성화
                 .csrf(csrf -> csrf.disable())
+                
+                // 세션 정책 설정 (STATELESS)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                
+                // 요청 권한 설정
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/doctor/register", "/api/doctor/login", "/api/doctor/checkLicense").permitAll() // 등록 및 로그인 요청 제외
-                        .anyRequest().authenticated()) // 그 외 요청은 인증 필요
+                        .requestMatchers("/h2-console/**").permitAll() // H2 콘솔 접근 허용
+                        .requestMatchers("/api/doctor/register", "/api/doctor/login", "/api/doctor/checkLicense").permitAll() // 등록 및 로그인 요청 허용
+                        .anyRequest().authenticated() // 그 외 요청은 인증 필요
+                )
+                
+                // 헤더 설정 (프레임 옵션 동일 출처 허용)
+                .headers(headers -> headers
+                        .frameOptions().sameOrigin()
+                )
+                
+                // JWT 필터 추가
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                
                 .build();
     }
 }
