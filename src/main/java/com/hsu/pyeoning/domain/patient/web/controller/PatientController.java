@@ -46,4 +46,9 @@ public class PatientController {
     public ResponseEntity<CustomApiResponse<?>> getPatientDetail(@PathVariable Long patientId) {
         return patientService.getPatientDetail(patientId);
     }
+
+    @GetMapping("/doctorInfo")
+    public ResponseEntity<CustomApiResponse<?>> getDoctorInfo() {
+        return patientService.getDoctorInfo();
+    }
 }

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.hsu.pyeoning.domain.doctor.entity.Doctor;
 import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
+import com.hsu.pyeoning.domain.doctor.web.dto.DoctorInfoDto;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
@@ -208,6 +209,31 @@ public class PatientServiceImpl implements PatientService {
                 patient.getPyeoningSpecial()
         );
         return ResponseEntity.ok(new CustomApiResponse<>(200, patientDetail, "환자 상세 조회에 성공했습니다."));
+    }
+
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> getDoctorInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String patientCode = authentication.getName();
+        Patient patient = patientRepository.findByPatientCode(patientCode)
+                .orElse(null);
+        if (patient == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "환자 정보를 찾을 수 없습니다."));
+        }
+
+        Doctor doctor = patient.getDoctorId();
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "해당 환자의 담당의사가 존재하지 않습니다."));
+        }
+
+        DoctorInfoDto doctorInfo = new DoctorInfoDto(
+                doctor.getDoctorName(),
+                doctor.getDoctorHospital()
+        );
+
+        return ResponseEntity.ok(new CustomApiResponse<>(200, doctorInfo, "의사 정보 조회에 성공했습니다."));
     }
 
     private LocalDate convertToLocalDateViaSqlDate(java.util.Date dateToConvert) {
