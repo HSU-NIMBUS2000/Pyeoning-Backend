@@ -41,4 +41,9 @@ public class PatientController {
             @RequestParam(defaultValue = "10") @Min(1) int size) {
         return patientService.getPatientList(page, size);
     }
+
+    @GetMapping("/{patientId}/detail")
+    public ResponseEntity<CustomApiResponse<?>> getPatientDetail(@PathVariable Long patientId) {
+        return patientService.getPatientDetail(patientId);
+    }
 }
