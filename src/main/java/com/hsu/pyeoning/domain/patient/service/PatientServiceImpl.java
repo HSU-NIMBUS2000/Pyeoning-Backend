@@ -5,6 +5,7 @@ import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
+import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.domain.doctor.entity.Doctor;
 import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
@@ -12,6 +13,7 @@ import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +66,67 @@ public class PatientServiceImpl implements PatientService {
 
         String token = jwtTokenProvider.createToken(patient.getPatientCode());
         return ResponseEntity.ok(new CustomApiResponse<>(200, token, "로그인에 성공했습니다."));
+    }
+
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> modifyPrompt(Long patientId, ModifyPromptDto dto) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "유효하지 않은 토큰입니다."));
+        }
+
+        String doctorLicenseStr = authentication.getName();
+        Long doctorLicense;
+
+        try {
+            doctorLicense = Long.parseLong(doctorLicenseStr);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "유효하지 않은 토큰 정보입니다."));
+        }
+
+        Doctor doctor = doctorRepository.findByDoctorLicense(doctorLicense)
+                .orElse(null);
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "의사 정보를 찾을 수 없습니다."));
+        }
+
+        Patient patient = patientRepository.findById(patientId).orElse(null);
+        if (patient == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "환자 정보를 찾을 수 없습니다."));
+        }
+
+        if (!patient.getDoctorId().getDoctorId().equals(doctor.getDoctorId())) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "해당 의사는 해당 환자의 담당 의사가 아닙니다."));
+        }
+
+        if (dto.getPatientName() != null) {
+            patient.setPatientName(dto.getPatientName());
+        }
+        if (dto.getPatientBirth() != null) {
+            patient.setPatientBirth(dto.getPatientBirth());
+        }
+        if (dto.getPyeoningDisease() != null) {
+            patient.setPyeoningDisease(dto.getPyeoningDisease());
+        }
+        if (dto.getPyeoningPrompt() != null) {
+            patient.setPyeoningPrompt(dto.getPyeoningPrompt());
+        }
+        if (dto.getPyeoningSpecial() != null) {
+            patient.setPyeoningSpecial(dto.getPyeoningSpecial());
+        }
+
+        patientRepository.save(patient);
+        return ResponseEntity.ok(new CustomApiResponse<>(
+                HttpStatus.OK.value(),
+                dto,
+                "환자 정보 수정에 성공했습니다."
+        ));
     }
 
     private String generatePatientCode() {
