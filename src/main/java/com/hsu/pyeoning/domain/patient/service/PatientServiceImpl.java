@@ -13,6 +13,7 @@ import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -69,13 +70,35 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> modifyPrompt(Long patientId, ModifyPromptDto dto) {
-        String doctorLicenseStr = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long doctorLicense = Long.parseLong(doctorLicenseStr);
-        Doctor doctor = doctorRepository.findByDoctorLicense(doctorLicense)
-                .orElseThrow(() -> new RuntimeException("의사 정보를 찾을 수 없습니다."));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "유효하지 않은 토큰입니다."));
+        }
 
-        Patient patient = patientRepository.findById(patientId)
-                .orElseThrow(() -> new RuntimeException("해당 ID의 환자를 찾을 수 없습니다."));
+        String doctorLicenseStr = authentication.getName();
+        Long doctorLicense;
+
+        try {
+            doctorLicense = Long.parseLong(doctorLicenseStr);
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "유효하지 않은 토큰 정보입니다."));
+        }
+
+        Doctor doctor = doctorRepository.findByDoctorLicense(doctorLicense)
+                .orElse(null);
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "의사 정보를 찾을 수 없습니다."));
+        }
+
+        Patient patient = patientRepository.findById(patientId).orElse(null);
+        if (patient == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "환자 정보를 찾을 수 없습니다."));
+        }
 
         if (!patient.getDoctorId().getDoctorId().equals(doctor.getDoctorId())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -99,7 +122,6 @@ public class PatientServiceImpl implements PatientService {
         }
 
         patientRepository.save(patient);
-
         return ResponseEntity.ok(new CustomApiResponse<>(
                 HttpStatus.OK.value(),
                 dto,
