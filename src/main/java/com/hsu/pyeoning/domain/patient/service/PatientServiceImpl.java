@@ -1,24 +1,32 @@
 // PatientServiceImpl.java
 package com.hsu.pyeoning.domain.patient.service;
 
-import com.hsu.pyeoning.domain.patient.entity.Patient;
-import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
-import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
-import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
-import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
-import com.hsu.pyeoning.global.response.CustomApiResponse;
-import com.hsu.pyeoning.domain.doctor.entity.Doctor;
-import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
-import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
+import java.security.SecureRandom;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.security.SecureRandom;
-import java.util.Random;
+import com.hsu.pyeoning.domain.doctor.entity.Doctor;
+import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
+import com.hsu.pyeoning.domain.patient.entity.Patient;
+import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
+import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
+import com.hsu.pyeoning.domain.patient.web.dto.PatientListDto;
+import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
+import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
+import com.hsu.pyeoning.global.response.CustomApiResponse;
+import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +39,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public ResponseEntity<CustomApiResponse<?>> registerPatient(PatientRegisterDto dto) {
         String doctorLicenseStr = SecurityContextHolder.getContext().getAuthentication().getName();
-        Long doctorLicense = Long.parseLong(doctorLicenseStr);
+        Long doctorLicense = Long.valueOf(doctorLicenseStr);
         Doctor doctor = doctorRepository.findByDoctorLicense(doctorLicense)
                 .orElseThrow(() -> new RuntimeException("의사 정보를 찾을 수 없습니다."));
 
@@ -42,6 +50,9 @@ public class PatientServiceImpl implements PatientService {
                 .patientEmail(dto.getPatientEmail())
                 .patientCode(generatePatientCode())
                 .doctorId(doctor)
+                .pyeoningDisease(dto.getPyeoningDisease())
+                .pyeoningPrompt(dto.getPyeoningPrompt())
+                .pyeoningSpecial(dto.getPyeoningSpecial())
                 .build();
 
         patientRepository.save(patient);
@@ -78,14 +89,7 @@ public class PatientServiceImpl implements PatientService {
         }
 
         String doctorLicenseStr = authentication.getName();
-        Long doctorLicense;
-
-        try {
-            doctorLicense = Long.parseLong(doctorLicenseStr);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomApiResponse<>(404, null, "유효하지 않은 토큰 정보입니다."));
-        }
+        Long doctorLicense = Long.valueOf(doctorLicenseStr);
 
         Doctor doctor = doctorRepository.findByDoctorLicense(doctorLicense)
                 .orElse(null);
@@ -127,6 +131,63 @@ public class PatientServiceImpl implements PatientService {
                 dto,
                 "환자 정보 수정에 성공했습니다."
         ));
+    }
+
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> getPatientList(int page, int size) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String doctorLicenseStr = authentication.getName();
+        Long doctorLicense = Long.valueOf(doctorLicenseStr);
+        Doctor doctor = doctorRepository.findByDoctorLicense(doctorLicense)
+                .orElse(null);
+        if (doctor == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "의사 정보를 찾을 수 없습니다."));
+        }
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        Page<Patient> patientPage = patientRepository.findByDoctorId(doctor, pageRequest);
+        if (patientPage.hasContent()) {
+            List<PatientListDto> patients = patientPage.getContent().stream()
+                    .map(patient -> {
+                        LocalDate birthDate = convertToLocalDateViaSqlDate(patient.getPatientBirth());
+                        return new PatientListDto(
+                                patient.getPatientId(),
+                                patient.getPatientName(),
+                                patient.getPatientGender().name(),
+                                patient.getPatientBirth().toString(),
+                                calculateAge(birthDate),
+                                patient.getPyeoningSpecial()
+                        );
+                    })
+                    .collect(Collectors.toList());
+            CustomApiResponse<List<PatientListDto>> response = new CustomApiResponse<>(
+                    HttpStatus.OK.value(),
+                    patients,
+                    "환자 목록 조회에 성공했습니다."
+            );
+            return ResponseEntity.ok(response);
+        } else {
+            CustomApiResponse<?> response = new CustomApiResponse<>(
+                    HttpStatus.OK.value(),
+                    null,
+                    "환자 목록 조회에 성공했습니다. 환자 목록이 없습니다."
+            );
+            return ResponseEntity.ok(response);
+        }
+    }
+
+    private LocalDate convertToLocalDateViaSqlDate(java.util.Date dateToConvert) {
+        if (dateToConvert == null) {
+            return null;
+        }
+        if (dateToConvert instanceof java.sql.Date sqlDate) {
+            return sqlDate.toLocalDate();
+        }
+        return new java.sql.Date(dateToConvert.getTime()).toLocalDate();
+    }
+
+    private String calculateAge(LocalDate birthDate) {
+        return String.valueOf(java.time.Period.between(birthDate, java.time.LocalDate.now()).getYears());
     }
 
     private String generatePatientCode() {

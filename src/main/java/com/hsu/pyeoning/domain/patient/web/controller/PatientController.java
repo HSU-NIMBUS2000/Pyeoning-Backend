@@ -6,6 +6,7 @@ import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
 import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,5 +33,12 @@ public class PatientController {
             @PathVariable Long patientId,
             @Valid @RequestBody ModifyPromptDto dto) {
         return patientService.modifyPrompt(patientId, dto);
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<CustomApiResponse<?>> getPatientList(
+            @RequestParam(defaultValue = "1") @Min(1) int page,
+            @RequestParam(defaultValue = "10") @Min(1) int size) {
+        return patientService.getPatientList(page, size);
     }
 }
