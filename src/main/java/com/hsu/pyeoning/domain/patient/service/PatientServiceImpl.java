@@ -4,9 +4,11 @@ package com.hsu.pyeoning.domain.patient.service;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
+import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.domain.doctor.entity.Doctor;
 import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
+import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ public class PatientServiceImpl implements PatientService {
 
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> registerPatient(PatientRegisterDto dto) {
@@ -48,6 +51,19 @@ public class PatientServiceImpl implements PatientService {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> patientLogin(PatientLoginDto dto) {
+        Patient patient = patientRepository.findByPatientCode(dto.getPatientCode())
+                .orElse(null);
+        if (patient == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomApiResponse<>(404, null, "유효하지 않은 접속코드입니다."));
+        }
+
+        String token = jwtTokenProvider.createToken(patient.getPatientCode());
+        return ResponseEntity.ok(new CustomApiResponse<>(200, token, "로그인에 성공했습니다."));
     }
 
     private String generatePatientCode() {
