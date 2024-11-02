@@ -1,6 +1,5 @@
 package com.hsu.pyeoning.domain.summary.entity;
 
-import com.hsu.pyeoning.domain.doctor.entity.Doctor;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -9,7 +8,6 @@ import lombok.*;
 @Entity
 @Table(name = "SUMMARY")
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,7 +20,7 @@ public class Summary extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
-    private Patient patientId; // 환자 FK
+    private Patient patient; // 환자 FK
 
     @Lob
     @Column(name = "summary_content")
