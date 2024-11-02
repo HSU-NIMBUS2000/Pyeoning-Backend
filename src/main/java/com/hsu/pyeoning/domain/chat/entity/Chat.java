@@ -1,6 +1,5 @@
 package com.hsu.pyeoning.domain.chat.entity;
 
-import com.hsu.pyeoning.domain.doctor.entity.Doctor;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.global.entity.BaseEntity;
 import jakarta.persistence.*;
