@@ -1,5 +1,6 @@
 package com.hsu.pyeoning.global.security.jwt;
 
+import com.hsu.pyeoning.domain.role.RoleName;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -89,5 +90,11 @@ public class JwtTokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             throw new RuntimeException("만료되었거나 유효하지 않는 JWT 토큰입니다.");
         }
+    }
+
+    // 토큰에서 역할 추출 메서드
+    public RoleName getRoleFromToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return RoleName.valueOf(claims.get("role", String.class));
     }
 }
