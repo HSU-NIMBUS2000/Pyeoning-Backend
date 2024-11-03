@@ -2,6 +2,7 @@ package com.hsu.pyeoning.domain.chat.service;
 
 import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
+import com.hsu.pyeoning.domain.chat.web.dto.ChatDto;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
@@ -12,9 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +24,7 @@ public class ChatServiceImpl implements ChatService {
     private final PatientRepository patientRepository;
     private final AuthenticationUserUtils authenticationUserUtils;
 
+    @Override
     public ResponseEntity<CustomApiResponse<?>> getChatContent(Long patientId, int page, int size) {
         String currentUserId = authenticationUserUtils.getCurrentUserId();
 
@@ -45,15 +45,13 @@ public class ChatServiceImpl implements ChatService {
 
         // 대화 내용이 존재하는 경우
         if (chatPage.hasContent()) {
-            List<Map<String, Object>> chatList = chatPage.stream()
-                    .map(chat -> {
-                        Map<String, Object> chatData = new LinkedHashMap<>();
-                        chatData.put("chatId", chat.getChatId());
-                        chatData.put("chatIsSend", chat.isChatIsSend() ? 1 : 0); // 발신이면 1, 수신이면 0
-                        chatData.put("chatContent", chat.getChatContent());
-                        chatData.put("createdAt", chat.getCreatedAt());
-                        return chatData;
-                    })
+            List<ChatDto> chatList = chatPage.stream()
+                    .map(chat -> new ChatDto(
+                            chat.getChatId(),
+                            chat.isChatIsSend() ? 1 : 0,
+                            chat.getChatContent(),
+                            chat.getCreatedAt()
+                    ))
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(CustomApiResponse.createSuccess(200, chatList, "대화 내용 조회에 성공했습니다."));
@@ -62,5 +60,4 @@ public class ChatServiceImpl implements ChatService {
         // 대화 내용이 존재하지 않는 경우
         return ResponseEntity.ok(CustomApiResponse.createSuccess(200, null, "대화 내용 조회에 성공했습니다. 대화 내용이 존재하지 않습니다."));
     }
-
 }
