@@ -25,6 +25,7 @@ public class ChatServiceImpl implements ChatService {
     private final PatientRepository patientRepository;
     private final AuthenticationUserUtils authenticationUserUtils;
 
+    @Override
     public ResponseEntity<CustomApiResponse<?>> getChatContent(Long patientId, int page, int size) {
         String currentUserId = authenticationUserUtils.getCurrentUserId();
 
