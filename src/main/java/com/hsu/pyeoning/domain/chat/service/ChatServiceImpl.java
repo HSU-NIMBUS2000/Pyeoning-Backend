@@ -2,7 +2,7 @@ package com.hsu.pyeoning.domain.chat.service;
 
 import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
-import com.hsu.pyeoning.domain.chat.web.dto.ChatResponseDto;
+import com.hsu.pyeoning.domain.chat.web.dto.ChatDto;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
@@ -45,8 +45,8 @@ public class ChatServiceImpl implements ChatService {
 
         // 대화 내용이 존재하는 경우
         if (chatPage.hasContent()) {
-            List<ChatResponseDto> chatList = chatPage.stream()
-                    .map(chat -> new ChatResponseDto(
+            List<ChatDto> chatList = chatPage.stream()
+                    .map(chat -> new ChatDto(
                             chat.getChatId(),
                             chat.isChatIsSend() ? 1 : 0,
                             chat.getChatContent(),

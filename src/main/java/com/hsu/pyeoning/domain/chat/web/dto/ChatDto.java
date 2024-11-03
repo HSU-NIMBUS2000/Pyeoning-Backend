@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatResponseDto {
+public class ChatDto {
     private Long chatId;
     private int chatIsSend;
     private String chatContent;
