@@ -19,6 +19,7 @@ public class SummaryServiceImpl implements SummaryService {
     private final SummaryRepository summaryRepository;
     private final AuthenticationUserUtils authenticationUserUtils;
 
+    @Override
     public ResponseEntity<CustomApiResponse<?>> getPatientSummary(Long patientId) {
         String currentUserId = authenticationUserUtils.getCurrentUserId();
 

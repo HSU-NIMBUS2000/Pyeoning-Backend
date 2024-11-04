@@ -76,8 +76,8 @@ public class PatientServiceImpl implements PatientService {
                     .body(new CustomApiResponse<>(404, null, "유효하지 않은 접속코드입니다."));
         }
 
-        String token = jwtTokenProvider.createToken(patient.getPatientCode());
-        return ResponseEntity.ok(new CustomApiResponse<>(200, token, "로그인에 성공했습니다."));
+        String token = jwtTokenProvider.createToken(patient.getPatientCode(), "ROLE_PATIENT");
+        return ResponseEntity.ok(new CustomApiResponse<>(200, token, "환자 로그인에 성공했습니다."));
     }
 
     @Override
