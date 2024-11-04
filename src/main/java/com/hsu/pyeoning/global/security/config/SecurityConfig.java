@@ -47,9 +47,9 @@ public class SecurityConfig {
                                 "/api/patient/{patientId}/modifyPrompt",
                                 "/api/patient/list",
                                 "/api/patient/{patientId}/detail",
-                                "/api/chat/history"
+                                "/api/chat/history/doctor"
                         ).hasRole("DOCTOR") // 의사만 접근 가능
-                        .requestMatchers("/api/patient/doctorInfo").hasRole("PATIENT") // 환자만 접근 가능
+                        .requestMatchers("/api/patient/doctorInfo", "/api/chat/history/patient").hasRole("PATIENT") // 환자만 접근 가능
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
 
