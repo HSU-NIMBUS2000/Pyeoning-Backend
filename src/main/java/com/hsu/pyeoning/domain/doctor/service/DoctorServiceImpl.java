@@ -56,7 +56,6 @@ public class DoctorServiceImpl implements DoctorService {
 
     // 의사 로그인
     public ResponseEntity<CustomApiResponse<?>> doctorLogin(DoctorLoginDto dto) {
-        // 면허 번호로 의사 찾기
         Doctor doctor = doctorRepository.findByDoctorLicense(dto.getDoctorLicense())
                 .orElse(null);
 
@@ -65,14 +64,12 @@ public class DoctorServiceImpl implements DoctorService {
                     .body(CustomApiResponse.createFailWithout(404, "면허 번호에 해당하는 의사가 없습니다."));
         }
 
-        // 비밀번호 확인
         if (!passwordEncoder.matches(dto.getDoctorPassword(), doctor.getDoctorPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(CustomApiResponse.createFailWithout(401, "비밀번호가 일치하지 않습니다."));
         }
 
-        // 토큰 생성후 성공 응답 반환
-        String token = jwtTokenProvider.createToken(String.valueOf(doctor.getDoctorLicense()));
+        String token = jwtTokenProvider.createToken(String.valueOf(doctor.getDoctorLicense()), "ROLE_DOCTOR");
         return ResponseEntity.ok(CustomApiResponse.createSuccess(200, token, "의사 로그인에 성공했습니다."));
     }
 

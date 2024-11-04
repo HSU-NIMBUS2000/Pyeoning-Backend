@@ -36,14 +36,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/h2-console/**").permitAll() // H2 콘솔 접근 허용
                         .requestMatchers(
-                            "/api/doctor/register", 
-                            "/api/doctor/login", 
-                            "/api/doctor/checkLicense",
-                            "/api/patient/login"
-                        ).permitAll() 
+                                "/api/doctor/registration",
+                                "/api/doctor/login",
+                                "/api/doctor/checkLicense",
+                                "/api/patient/registration",
+                                "/api/patient/login"
+                        ).permitAll() // 회원가입, 로그인, 면허 중복 확인은 인증 불필요
+                        .requestMatchers(
+                                "/api/summary/patientSummary/**",
+                                "/api/patient/{patientId}/modifyPrompt",
+                                "/api/patient/list",
+                                "/api/patient/{patientId}/detail",
+                                "/api/chat/history"
+                        ).hasRole("DOCTOR") // 의사만 접근 가능
+                        .requestMatchers("/api/patient/doctorInfo").hasRole("PATIENT") // 환자만 접근 가능
                         .anyRequest().authenticated() // 그 외 요청은 인증 필요
                 )
-                
+
                 // 헤더 설정 (프레임 옵션 동일 출처 허용)
                 .headers(headers -> headers
                         .frameOptions().sameOrigin()

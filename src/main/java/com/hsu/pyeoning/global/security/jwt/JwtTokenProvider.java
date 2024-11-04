@@ -1,6 +1,5 @@
 package com.hsu.pyeoning.global.security.jwt;
 
-import com.hsu.pyeoning.domain.role.RoleName;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -36,9 +35,10 @@ public class JwtTokenProvider {
     @PostConstruct
     protected void init() {secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());}
 
-    public String createToken(String userId) {
+    public String createToken(String userId, String role) {
         Claims claims = Jwts.claims().setSubject(userId);
         claims.put("userId", userId);
+        claims.put("roles", Collections.singletonList(role));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
@@ -59,9 +59,7 @@ public class JwtTokenProvider {
     public void setSecurityContext(String token) {
         Claims claims = getClaimsFromToken(token);
         List<String> roles = claims.get("roles", List.class);
-        List<GrantedAuthority> authorities = (roles == null)
-                ? Collections.emptyList()
-                : roles.stream()
+        List<GrantedAuthority> authorities = roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
@@ -92,9 +90,4 @@ public class JwtTokenProvider {
         }
     }
 
-    // 토큰에서 역할 추출 메서드
-    public RoleName getRoleFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-        return RoleName.valueOf(claims.get("role", String.class));
-    }
 }

@@ -22,7 +22,7 @@ public class DoctorController {
 
     private final DoctorServiceImpl doctorService;
 
-    @PostMapping("/register")
+    @PostMapping("/registration")
     public ResponseEntity<CustomApiResponse<?>> registerDoctor(@Valid @RequestBody DoctorRegisterDto dto) {
         return doctorService.registDoctor(dto);
     }
