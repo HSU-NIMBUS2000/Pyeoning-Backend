@@ -4,5 +4,6 @@ import com.hsu.pyeoning.global.response.CustomApiResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface ChatService {
-    ResponseEntity<CustomApiResponse<?>> getChatContent(Long patientId, int page, int size);
+    ResponseEntity<CustomApiResponse<?>> getChatContentForDoctor(Long patientId, int page, int size);
+    ResponseEntity<CustomApiResponse<?>> getChatContentForPatient(String patientCode, int page, int size);
 }
