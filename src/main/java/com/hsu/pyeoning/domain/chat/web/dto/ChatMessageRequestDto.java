@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class ChatMessageRequestDTO {
+public class ChatMessageRequestDto {
     @NotBlank
-    private String sendChatMessage;
+    private String chatContent;
 }

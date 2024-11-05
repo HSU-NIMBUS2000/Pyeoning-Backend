@@ -1,7 +1,7 @@
 package com.hsu.pyeoning.domain.chat.web.controller;
 
 import com.hsu.pyeoning.domain.chat.service.ChatServiceImpl;
-import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDTO;
+import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
 import jakarta.validation.Valid;
@@ -38,8 +38,7 @@ public class ChatController {
     // 환자 채팅메시지 전송
     @PostMapping("/send")
     public ResponseEntity<CustomApiResponse<?>> sendChatMessage(
-            @Valid @RequestBody ChatMessageRequestDTO chatMessageRequestDTO) {
-        String currentPatientCode = authenticationUserUtils.getCurrentUserId();
-        return chatService.processChatMessage(currentPatientCode, chatMessageRequestDTO);
+            @Valid @RequestBody ChatMessageRequestDto chatMessageRequestDTO) {
+        return chatService.processChatMessage(chatMessageRequestDTO);
     }
 }
