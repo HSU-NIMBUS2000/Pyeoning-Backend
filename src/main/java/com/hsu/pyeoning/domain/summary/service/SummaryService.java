@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface SummaryService {
     ResponseEntity<CustomApiResponse<?>> getPatientSummary(Long patientId);
+    // 요약 보고서 생성
+    ResponseEntity<CustomApiResponse<?>> makePatientSummary(Long patientId);
 }

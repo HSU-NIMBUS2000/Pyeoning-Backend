@@ -140,7 +140,7 @@ public class ChatServiceImpl implements ChatService {
         // 504 : AI 서버 시간초과
 
         // FastAPI 통신 성공
-        String receivedContent = "응답응답";
+        String receivedContent = "응답응답"; //통신 후 수정 예정
 
         // 펴닝 응답 Chat save
         Chat newPyeoningChat = Chat.addChat(receivedContent, patient, false);
