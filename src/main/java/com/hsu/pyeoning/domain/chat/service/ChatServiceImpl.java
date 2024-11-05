@@ -3,6 +3,7 @@ package com.hsu.pyeoning.domain.chat.service;
 import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
 import com.hsu.pyeoning.domain.chat.web.dto.ChatDto;
+import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDTO;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
@@ -26,6 +27,7 @@ public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
     private final PatientRepository patientRepository;
     private final AuthenticationUserUtils authenticationUserUtils;
+    private final UserRepository
 
     // 의사가 특정 환자의 대화 내용 조회
     @Override
@@ -105,5 +107,26 @@ public class ChatServiceImpl implements ChatService {
 
         // 대화 내용이 존재하지 않는 경우
         return ResponseEntity.ok(CustomApiResponse.createSuccess(200, null, "대화 내용 조회에 성공했습니다. 대화 내용이 존재하지 않습니다."));
+    }
+
+    // 환자가 채팅 메세지 전송
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> processChatMessage(String currentPatientCode, ChatMessageRequestDTO chatMessageRequestDTO) {
+        // 메세지 전송한 환자 알아내기
+        Long patientId = Long.valueOf(authenticationUserUtils.getCurrentUserId());
+        Patient patient = patientRepository.getReferenceById(patientId);
+
+        // 환자 메세지 save
+        Chat newPatientChat = Chat.addChat(chatMessageRequestDTO.getSendChatMessage(), patient, true);
+        chatRepository.save(newPatientChat);
+
+        // FastAPI 통신
+        // 502 (AI 서버와의 통신 실패)
+        // 504 (AI 서버 시간초과)
+
+        // 펴닝 응답 메세지 save
+
+        // 200 (메세지 전송 및 AI 응답 생성에 성공)
+        return null;
     }
 }

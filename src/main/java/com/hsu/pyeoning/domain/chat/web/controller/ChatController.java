@@ -1,14 +1,13 @@
 package com.hsu.pyeoning.domain.chat.web.controller;
 
 import com.hsu.pyeoning.domain.chat.service.ChatServiceImpl;
+import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDTO;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -34,5 +33,13 @@ public class ChatController {
             @RequestParam(defaultValue = "10") int size) {
         String currentPatientCode = authenticationUserUtils.getCurrentUserId();
         return chatService.getChatContentForPatient(currentPatientCode, page, size);
+    }
+
+    // 환자 채팅메시지 전송
+    @PostMapping("/send")
+    public ResponseEntity<CustomApiResponse<?>> sendChatMessage(
+            @Valid @RequestBody ChatMessageRequestDTO chatMessageRequestDTO) {
+        String currentPatientCode = authenticationUserUtils.getCurrentUserId();
+        return chatService.processChatMessage(currentPatientCode, chatMessageRequestDTO);
     }
 }
