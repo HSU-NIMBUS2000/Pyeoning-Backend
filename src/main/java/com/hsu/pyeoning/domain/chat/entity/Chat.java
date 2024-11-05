@@ -29,4 +29,14 @@ public class Chat extends BaseEntity {
     @Column(name = "chat_content")
     private String chatContent; // 채팅 내용
 
+    // ======== 편의 메서드 ========
+    // 채팅 저장 메서드
+    public static Chat addChat(String content, Patient patient, boolean isSend) {
+        return Chat.builder()
+                .chatContent(content)
+                .chatIsSend(isSend)
+                .patient(patient)
+                .build();
+    }
+
 }

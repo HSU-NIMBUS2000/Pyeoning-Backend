@@ -3,6 +3,8 @@ package com.hsu.pyeoning.domain.chat.service;
 import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
 import com.hsu.pyeoning.domain.chat.web.dto.ChatDto;
+import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
+import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageResponseDto;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
@@ -105,5 +107,51 @@ public class ChatServiceImpl implements ChatService {
 
         // 대화 내용이 존재하지 않는 경우
         return ResponseEntity.ok(CustomApiResponse.createSuccess(200, null, "대화 내용 조회에 성공했습니다. 대화 내용이 존재하지 않습니다."));
+    }
+
+    // 환자가 채팅 메세지 전송
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> processChatMessage(ChatMessageRequestDto chatMessageRequestDto) {
+        String currentUserId = authenticationUserUtils.getCurrentUserId();
+//        System.out.println("currentUserId: "+currentUserId); -> currentUserId: LAH8OP2C
+
+        // 401 : 환자 정보 찾을 수 없음
+        Patient patient = patientRepository.findByPatientCode(currentUserId)
+                .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
+
+
+        String sendContent = chatMessageRequestDto.getChatContent();
+
+        // 환자 Chat save
+        Chat newPatientChat = Chat.addChat(sendContent, patient, true);
+        chatRepository.save(newPatientChat);
+
+//        // FastAPI 통신
+//        ChatMessageFastApiRequestDto.builder()
+//                .disease(patient.getPyeoningDisease())
+//                .newChat(content)
+//                .chatHistory()
+//                .build();
+
+        // 502 : AI 서버와의 통신 실패
+
+        // 504 : AI 서버 시간초과
+
+        // FastAPI 통신 성공
+        String receivedContent = "응답응답";
+
+        // 펴닝 응답 Chat save
+        Chat newPyeoningChat = Chat.addChat(receivedContent, patient, false);
+        chatRepository.save(newPyeoningChat);
+
+        // data 가공
+        ChatMessageResponseDto data = ChatMessageResponseDto.builder()
+                .chatId(newPyeoningChat.getChatId())
+                .chatContent(newPyeoningChat.getChatContent())
+                .createdAt(newPyeoningChat.localDateTimeToString())
+                .build();
+
+        // 201 : 메세지 전송 및 AI 응답 생성에 성공
+        return ResponseEntity.ok(CustomApiResponse.createSuccess(201, data, "메세지 전송 및 AI 응답 생성에 성공했습니다."));
     }
 }
