@@ -23,8 +23,7 @@ public class JwtTokenFilter extends GenericFilterBean {
 
         // 등록 및 로그인 경로를 필터링하지 않음
         String path = request.getRequestURI();
-        if (path.equals("/api/doctor/registration") || path.equals("/api/doctor/login") ||
-                path.equals("/api/patient/registration") || path.equals("/api/patient/login")) {
+        if (path.equals("/api/doctor/registration") || path.equals("/api/doctor/login") || path.equals("/api/patient/login")) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
