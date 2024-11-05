@@ -41,4 +41,10 @@ public class ChatController {
             @Valid @RequestBody ChatMessageRequestDto chatMessageRequestDTO) {
         return chatService.processChatMessage(chatMessageRequestDTO);
     }
+
+    // 세션 종료
+    @PostMapping("/endSession")
+    public ResponseEntity<CustomApiResponse<?>> endChatSession() {
+        return chatService.endSessionForPatient();
+    }
 }

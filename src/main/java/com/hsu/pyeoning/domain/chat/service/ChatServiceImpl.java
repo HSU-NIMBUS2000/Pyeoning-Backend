@@ -154,4 +154,10 @@ public class ChatServiceImpl implements ChatService {
         // 201 : 메세지 전송 및 AI 응답 생성에 성공
         return ResponseEntity.ok(CustomApiResponse.createSuccess(201, data, "메세지 전송 및 AI 응답 생성에 성공했습니다."));
     }
+
+    // 세션 종료
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> endSessionForPatient() {
+        return null;
+    }
 }
