@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class ChatMessageRequestDto {
-    @NotBlank
+    @NotBlank(message = "새로운 질문이 없습니다.")
     private String chatContent;
 }
