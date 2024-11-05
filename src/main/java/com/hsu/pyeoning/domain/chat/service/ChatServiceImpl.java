@@ -9,6 +9,7 @@ import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -110,9 +111,10 @@ public class ChatServiceImpl implements ChatService {
     }
 
     // 환자가 채팅 메세지 전송
+    @Transactional
     @Override
     public ResponseEntity<CustomApiResponse<?>> processChatMessage(ChatMessageRequestDto chatMessageRequestDto) {
-        String currentUserId = authenticationUserUtils.getCurrentUserId();
+        String currentUserId = authenticationUserUtils.getCurrentUserId(); // patientCode를 반환 ex. LAH8OP2C
 //        System.out.println("currentUserId: "+currentUserId); -> currentUserId: LAH8OP2C
 
         // 401 : 환자 정보 찾을 수 없음
@@ -153,5 +155,27 @@ public class ChatServiceImpl implements ChatService {
 
         // 201 : 메세지 전송 및 AI 응답 생성에 성공
         return ResponseEntity.ok(CustomApiResponse.createSuccess(201, data, "메세지 전송 및 AI 응답 생성에 성공했습니다."));
+    }
+
+    // 세션 종료
+    @Override
+    @Transactional
+    public ResponseEntity<CustomApiResponse<?>> endSessionForPatient() {
+        String currentUserId = authenticationUserUtils.getCurrentUserId(); //patientCode
+
+        // 401 : 환자 정보 찾을 수 없음
+        Patient patient = patientRepository.findByPatientCode(currentUserId)
+                .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
+
+        // 환자의 마지막 채팅 메시지 가져오기
+        Chat lastChat = chatRepository.findTopByPatientOrderByCreatedAtDesc(patient)
+                .orElseThrow(() -> new RuntimeException("채팅 기록이 없습니다."));
+
+        // 세션 종료 플래그 설정
+        lastChat.setSessionEnd(true);
+        chatRepository.save(lastChat);
+
+        // 200 : 세션 종료 성공
+        return ResponseEntity.ok(CustomApiResponse.createSuccess(200, null, "세션이 성공적으로 종료되었습니다."));
     }
 }

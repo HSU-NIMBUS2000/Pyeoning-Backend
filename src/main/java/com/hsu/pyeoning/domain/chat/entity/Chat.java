@@ -29,6 +29,10 @@ public class Chat extends BaseEntity {
     @Column(name = "chat_content")
     private String chatContent; // 채팅 내용
 
+    @Setter
+    @Column(name = "session_end", nullable = false)
+    private boolean sessionEnd = false; // 세션 종료 플래그, 기본값은 false
+
     // ======== 편의 메서드 ========
     // 채팅 저장 메서드
     public static Chat addChat(String content, Patient patient, boolean isSend) {
@@ -38,5 +42,4 @@ public class Chat extends BaseEntity {
                 .patient(patient)
                 .build();
     }
-
 }
