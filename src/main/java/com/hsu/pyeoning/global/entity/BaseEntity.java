@@ -23,8 +23,15 @@ public abstract class BaseEntity {
     @Column(name="updated_at")
     private LocalDateTime updatedAt;
 
+    // 날짜만 반환 (ex. 2024.11.06)
+    public String localDateToString() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        return createdAt.format(dateFormatter);
+    }
+
+    // 날짜와 시간 반환 (ex. 11/6 13:30)
     public String localDateTimeToString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-        return createdAt.format(formatter);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd HH:mm");
+        return createdAt.format(dateTimeFormatter);
     }
 }

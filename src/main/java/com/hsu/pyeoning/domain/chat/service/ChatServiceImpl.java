@@ -147,7 +147,7 @@ public class ChatServiceImpl implements ChatService {
         ChatMessageResponseDto data = ChatMessageResponseDto.builder()
                 .chatId(newPyeoningChat.getChatId())
                 .chatContent(newPyeoningChat.getChatContent())
-                .createdAt(newPyeoningChat.)
+                .createdAt(newPyeoningChat.localDateTimeToString())
                 .build();
 
         // 201 : 메세지 전송 및 AI 응답 생성에 성공

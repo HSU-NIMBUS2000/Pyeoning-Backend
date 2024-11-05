@@ -13,5 +13,5 @@ public class ChatMessageResponseDto {
     // 채팅 내용
     private String chatContent;
     // 채팅 생성 일시
-    private LocalDateTime createdAt;
+    private String createdAt;
 }
