@@ -20,6 +20,9 @@ public class DoctorRegisterDto {
     @NotNull(message = "면허 번호를 입력해주세요.")
     private Long doctorLicense;
 
+    @NotBlank(message = "이메일을 입력해주세요.")
+    private String doctorEmail;
+
     @NotBlank(message = "비밀번호를 입력해주세요.")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
             message = "비밀번호는 영문/숫자/특수기호를 조합하여 8자 이상 설정해야 합니다.")

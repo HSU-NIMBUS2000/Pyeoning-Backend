@@ -33,6 +33,7 @@ public class DoctorServiceImpl implements DoctorService {
                 .doctorName(dto.getDoctorName())
                 .doctorHospital(dto.getDoctorHospital())
                 .doctorLicense(dto.getDoctorLicense())
+                .doctorEmail(dto.getDoctorEmail())
                 .doctorPassword(passwordEncoder.encode(dto.getDoctorPassword()))
                 .build();
         doctorRepository.save(doctor);
