@@ -119,6 +119,7 @@ public class ChatServiceImpl implements ChatService {
         Patient patient = patientRepository.findByPatientCode(currentUserId)
                 .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
 
+
         String sendContent = chatMessageRequestDto.getChatContent();
 
         // 환자 Chat save
