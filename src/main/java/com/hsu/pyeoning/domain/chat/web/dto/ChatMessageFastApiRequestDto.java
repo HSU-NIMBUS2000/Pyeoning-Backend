@@ -4,11 +4,13 @@ import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.global.api.dto.ChatHistory;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // FastAPI Request DTO
+@EqualsAndHashCode(callSuper=false) // warning 해결 : 상위 클래스 필드 제외
 @Data
 public class ChatMessageFastApiRequestDto extends ChatHistory {
     // 병명

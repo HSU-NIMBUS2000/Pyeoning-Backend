@@ -135,47 +135,48 @@ public class ChatServiceImpl implements ChatService {
 
         // 환자의 해당 세션동안 대화한 채팅 기록 가져오기
         List<Chat> chats = chatRepository.findChatHistoryBetweenSessions(patient.getPatientId());
-//        System.out.println("chatHistory 출력");
-//        for (Chat chat : chats) {
-//            System.out.println(chat.getChatId());
-//        }
 
-        // FastAPI - request Dto
+        // FastAPI - request Dto 빌드
         ChatMessageFastApiRequestDto requestDto = ChatMessageFastApiRequestDto.builder()
                 .disease(patient.getPyeoningDisease())
                 .newChat(sendContent)
                 .chats(chats)
                 .prompt(patient.getPyeoningPrompt())
                 .build();
-        System.out.println("requestDto : " + requestDto);
+//        System.out.println("requestDto : " + requestDto);
 
+        // FastAPI - 엔드포인트 설정
         String fastApiEndpoint = fastApiUrl + "/api/doctor-ai/chatbot";
         String receivedContent = null;
 
         try {
-            // FastAPI 서버에 POST 요청 전송
+            // FastAPI - 서버에 POST 요청 전송
             ResponseEntity<String> response = restTemplate.postForEntity(fastApiEndpoint, requestDto, String.class);
+//            System.out.println("responseDto: " + response);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                // 성공 - 응답 JSON 파싱
+                // FastAPI - 응답 JSON 파싱
                 ObjectMapper objectMapper = new ObjectMapper();
                 ChatMessageFastApiResponseDto responseDto = objectMapper.readValue(response.getBody(), ChatMessageFastApiResponseDto.class);
-                receivedContent = responseDto.getData().getNewChat(); // newChat 값만 가져오기
+                receivedContent = responseDto.getData().getNewChat(); // newChat 값 가져오기
             } else {
-                throw new RuntimeException("FastAPI 통신 실패: 응답 상태 코드가 성공 범위가 아닙니다.");
+                // 502 : 응답 상태 코드가 성공 범위가 아남
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                        .body(CustomApiResponse.createFailWithout(502, "AI 서버와의 통신에 실패했습니다. 응답 코드가 성공 범위가 아닙니다."));
             }
-
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             // 502 : AI 서버와의 통신 실패
-            throw new RuntimeException("AI 서버와의 통신 중 오류 발생 (클라이언트 또는 서버 오류): " + e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                    .body(CustomApiResponse.createFailWithout(502, "AI 서버와의 통신 중 오류 발생: " + e.getMessage()));
         } catch (ResourceAccessException e) {
             // 504 : AI 서버 시간 초과
-            throw new RuntimeException("AI 서버와의 통신 중 시간 초과 발생: " + e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT)
+                    .body(CustomApiResponse.createFailWithout(504, "AI 서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요."));
         } catch (Exception e) {
-            // JSON 파싱 오류 등 기타 예외
-            throw new RuntimeException("응답 파싱 중 오류 발생: " + e.getMessage(), e);
+            // 500 : JSON 파싱 오류 발생 등 기타 예외
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(CustomApiResponse.createFailWithout(500, "응답 파싱 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."));
         }
-
 
         // 펴닝 응답 Chat 저장
         Chat newPyeoningChat = Chat.addChat(receivedContent, patient, false);
