@@ -134,7 +134,7 @@ public class SummaryServiceImpl implements SummaryService {
                     .body(CustomApiResponse.createFailWithout(500, "응답 파싱 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."));
         }
 
-        // 400 : 충분한 대화 내용 필요
+        // 400 : 충분한 대화 내용 필요 (summaryContent가 빈칸인 경우)
         if (summaryContent.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(CustomApiResponse.createFailWithout(400, "정확한 분석을 위해 충분한 양의 대화 내용이 필요합니다."));
