@@ -59,8 +59,6 @@ public class SummaryServiceImpl implements SummaryService {
     public ResponseEntity<CustomApiResponse<?>> makePatientSummary() {
         String currentUserId = authenticationUserUtils.getCurrentUserId();
 
-
-
         // 401 : 환자 정보 찾을 수 없음
         Patient patient = patientRepository.findByPatientCode(currentUserId)
                 .orElseThrow(() -> new UnauthorizedException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
@@ -73,18 +71,29 @@ public class SummaryServiceImpl implements SummaryService {
         }
 
         // 환자의 해당 세션동안 대화한 채팅 기록 가져오기
-        List<Chat> chatHistory = chatRepository.findChatHistoryBetweenSessions(patient);
+        List<Chat> chatHistory = chatRepository.findChatHistoryBetweenSessions(patient.getPatientId());
+//        System.out.println("chatHistory 출력");
+//        for (Chat chat : chatHistory) {
+//            System.out.println(chat.getChatId());
+//        }
 
-        // 400 : 충분한 대화 내용 필요
-        if (chatHistory.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(CustomApiResponse.createFailWithout(400, "정확한 분석을 위해 충분한 양의 대화 내용이 필요합니다."));
+        Boolean isSessionEnded = chatRepository.isLatestChatSessionEnded(patient.getPatientId());
+        // 409 : 세션 종료 이후 요약보고서 생성 가능
+        if (!isSessionEnded) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(CustomApiResponse.createFailWithout(409, "환자 채팅의 세션 종료 이후 요약보고서 생성이 가능합니다."));
         }
 
         // FastAPI 통신 부분은 나중에 추가
 
         // 요약 보고서 예제 데이터 생성 (임시로 설정)
         String summaryContent = "환자는 현재 불안 증세를 호소하고 있으며, 상담을 통해 상태를 점검할 필요가 있습니다.";
+
+        // 400 : 충분한 대화 내용 필요
+        if (summaryContent.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(CustomApiResponse.createFailWithout(400, "정확한 분석을 위해 충분한 양의 대화 내용이 필요합니다."));
+        }
 
         // 요약 보고서 save
         Summary summary = Summary.builder()
@@ -95,7 +104,7 @@ public class SummaryServiceImpl implements SummaryService {
 
         // 요약 보고서 데이터 가공
         ChatSummaryResponseDto data = ChatSummaryResponseDto.builder()
-                .summaryId(summary.getSummaryId()) // 임시 ID
+                .summaryId(summary.getSummaryId())
                 .summaryContent(summaryContent)
                 .createdAt(summary.localDateToString()) // ex. 2024.11.06"
                 .build();
