@@ -14,15 +14,15 @@ import java.util.List;
 public class ChatHistory {
     private List<ChatMessage> chatHistory = new ArrayList<>();
 
-    // 채팅 메시지 추가 메서드
+    // 채팅 메시지 추가
     public void addChatMessage(String sender, String message) {
         this.chatHistory.add(new ChatMessage(sender, message));
     }
 
-    // Chat 리스트를 ChatMessage 리스트로 변환하여 설정하는 메서드
-    public void setChatHistoryFromChats(List<Chat> chats) {
+    // Chat 리스트 -> ChatMessage 리스트 변환
+    public void setChatHistoryFromChats(List<Chat> chats, List<ChatMessage> chatHistory) {
         for (Chat chat : chats) {
-            this.addChatMessage(chat.getSender(), chat.getChatContent());
+            chatHistory.add(new ChatMessage(chat.getSender(), chat.getChatContent()));
         }
     }
 

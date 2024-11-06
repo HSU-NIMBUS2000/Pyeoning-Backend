@@ -137,17 +137,21 @@ public class ChatServiceImpl implements ChatService {
 
         // 환자의 해당 세션동안 대화한 채팅 기록 가져오기
         List<Chat> chats = chatRepository.findChatHistoryBetweenSessions(patient.getPatientId());
+//        System.out.println("chatHistory 출력");
+//        for (Chat chat : chats) {
+//            System.out.println(chat.getChatId());
+//        }
 
-        // FastAPI 요청 DTO 빌드
+        // FastAPI 요청 DTO
         ChatMessageFastApiRequestDto requestDto = ChatMessageFastApiRequestDto.builder()
                 .disease(patient.getPyeoningDisease())
                 .newChat(sendContent)
+                .chats(chats)
                 .prompt(patient.getPyeoningPrompt())
                 .build();
-        // 채팅 기록을 ChatHistory로 변환
-        requestDto.setChatHistoryFromChats(chats);
+        System.out.println("requestDto : " + requestDto);
 
-        String fastApiEndpoint = fastApiUrl + "/api/chat/send";
+        String fastApiEndpoint = fastApiUrl + "/api/doctor-ai/chatbot";
         String receivedContent = null;
 
         try {

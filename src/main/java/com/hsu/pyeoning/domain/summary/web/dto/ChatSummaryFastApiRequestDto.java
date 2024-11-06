@@ -12,5 +12,4 @@ import java.util.List;
 public class ChatSummaryFastApiRequestDto extends ChatHistory {
     private String disease;
     private List<ChatMessage> chatHistory = new ArrayList<>();
-
 }
