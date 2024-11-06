@@ -135,7 +135,7 @@ public class SummaryServiceImpl implements SummaryService {
         }
 
         // 400 : 충분한 대화 내용 필요
-        if (summaryContent.isEmpty()) {
+        if (summaryContent.isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(CustomApiResponse.createFailWithout(400, "정확한 분석을 위해 충분한 양의 대화 내용이 필요합니다."));
         }
