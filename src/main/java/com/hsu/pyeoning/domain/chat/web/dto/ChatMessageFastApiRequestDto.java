@@ -8,6 +8,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+// FastAPI Request DTO
 @Data
 public class ChatMessageFastApiRequestDto extends ChatHistory {
     // 병명

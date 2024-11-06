@@ -1,11 +1,9 @@
 package com.hsu.pyeoning.domain.chat.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
-import com.hsu.pyeoning.domain.chat.web.dto.ChatDto;
-import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageFastApiRequestDto;
-import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
-import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageResponseDto;
+import com.hsu.pyeoning.domain.chat.web.dto.*;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
@@ -142,7 +140,7 @@ public class ChatServiceImpl implements ChatService {
 //            System.out.println(chat.getChatId());
 //        }
 
-        // FastAPI 요청 DTO
+        // FastAPI - request Dto
         ChatMessageFastApiRequestDto requestDto = ChatMessageFastApiRequestDto.builder()
                 .disease(patient.getPyeoningDisease())
                 .newChat(sendContent)
@@ -158,19 +156,26 @@ public class ChatServiceImpl implements ChatService {
             // FastAPI 서버에 POST 요청 전송
             ResponseEntity<String> response = restTemplate.postForEntity(fastApiEndpoint, requestDto, String.class);
 
-            if (response.getStatusCode().is2xxSuccessful()) {
-                receivedContent = response.getBody(); // AI의 응답 내용을 가져옴
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                // 성공 - 응답 JSON 파싱
+                ObjectMapper objectMapper = new ObjectMapper();
+                ChatMessageFastApiResponseDto responseDto = objectMapper.readValue(response.getBody(), ChatMessageFastApiResponseDto.class);
+                receivedContent = responseDto.getData().getNewChat(); // newChat 값만 가져오기
             } else {
-                throw new RuntimeException("FastAPI 통신 실패");
+                throw new RuntimeException("FastAPI 통신 실패: 응답 상태 코드가 성공 범위가 아닙니다.");
             }
 
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             // 502 : AI 서버와의 통신 실패
-            throw new RuntimeException("AI 서버와의 통신 중 오류 발생: " + e.getMessage());
+            throw new RuntimeException("AI 서버와의 통신 중 오류 발생 (클라이언트 또는 서버 오류): " + e.getMessage(), e);
         } catch (ResourceAccessException e) {
             // 504 : AI 서버 시간 초과
-            throw new RuntimeException("AI 서버 시간 초과: " + e.getMessage());
+            throw new RuntimeException("AI 서버와의 통신 중 시간 초과 발생: " + e.getMessage(), e);
+        } catch (Exception e) {
+            // JSON 파싱 오류 등 기타 예외
+            throw new RuntimeException("응답 파싱 중 오류 발생: " + e.getMessage(), e);
         }
+
 
         // 펴닝 응답 Chat 저장
         Chat newPyeoningChat = Chat.addChat(receivedContent, patient, false);
