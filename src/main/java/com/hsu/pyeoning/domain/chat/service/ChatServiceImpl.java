@@ -3,6 +3,7 @@ package com.hsu.pyeoning.domain.chat.service;
 import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
 import com.hsu.pyeoning.domain.chat.web.dto.ChatDto;
+import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageFastApiRequestDto;
 import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
 import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageResponseDto;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
@@ -115,7 +116,6 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public ResponseEntity<CustomApiResponse<?>> processChatMessage(ChatMessageRequestDto chatMessageRequestDto) {
         String currentUserId = authenticationUserUtils.getCurrentUserId(); // patientCode를 반환 ex. LAH8OP2C
-//        System.out.println("currentUserId: "+currentUserId); -> currentUserId: LAH8OP2C
 
         // 401 : 환자 정보 찾을 수 없음
         Patient patient = patientRepository.findByPatientCode(currentUserId)
@@ -127,12 +127,12 @@ public class ChatServiceImpl implements ChatService {
         Chat newPatientChat = Chat.addChat(sendContent, patient, true);
         chatRepository.save(newPatientChat);
 
-//        // FastAPI 통신
-//        ChatMessageFastApiRequestDto.builder()
-//                .disease(patient.getPyeoningDisease())
-//                .newChat(content)
-//                .chatHistory()
-//                .build();
+        // FastAPI 통신
+        ChatMessageFastApiRequestDto.builder()
+                .disease(patient.getPyeoningDisease())
+                .newChat(sendContent)
+                .chatHistory()
+                .build();
 
         // 502 : AI 서버와의 통신 실패
 
