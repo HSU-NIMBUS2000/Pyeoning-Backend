@@ -33,7 +33,7 @@ public class Chat extends BaseEntity {
     @Column(name = "session_end", nullable = false)
     private boolean sessionEnd = false; // 세션 종료 플래그, 기본값은 false
 
-    // ======== 편의 메서드 ========
+    // ============= 편의 메서드 ==============
     // 채팅 저장 메서드
     public static Chat addChat(String content, Patient patient, boolean isSend) {
         return Chat.builder()
@@ -42,4 +42,10 @@ public class Chat extends BaseEntity {
                 .patient(patient)
                 .build();
     }
+
+    // sender 정보를 반환하는 메서드
+    public String getSender() {
+        return chatIsSend ? patient.getPatientName() : "펴닝";
+    }
+
 }
