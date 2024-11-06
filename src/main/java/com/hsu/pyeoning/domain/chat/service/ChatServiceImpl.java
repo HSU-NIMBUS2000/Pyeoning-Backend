@@ -121,7 +121,6 @@ public class ChatServiceImpl implements ChatService {
         Patient patient = patientRepository.findByPatientCode(currentUserId)
                 .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
 
-
         String sendContent = chatMessageRequestDto.getChatContent();
 
         // 환자 Chat save
@@ -140,7 +139,7 @@ public class ChatServiceImpl implements ChatService {
         // 504 : AI 서버 시간초과
 
         // FastAPI 통신 성공
-        String receivedContent = "응답응답";
+        String receivedContent = "응답응답"; //통신 후 수정 예정
 
         // 펴닝 응답 Chat save
         Chat newPyeoningChat = Chat.addChat(receivedContent, patient, false);

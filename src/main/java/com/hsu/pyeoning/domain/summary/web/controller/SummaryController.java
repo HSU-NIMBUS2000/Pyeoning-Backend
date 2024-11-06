@@ -20,4 +20,9 @@ public class SummaryController {
         return summaryService.getPatientSummary(patientId);
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<CustomApiResponse<?>> makePatientChatSummary() {
+        return summaryService.makePatientSummary();
+    }
+
 }
