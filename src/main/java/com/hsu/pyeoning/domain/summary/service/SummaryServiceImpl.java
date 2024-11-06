@@ -77,15 +77,51 @@ public class SummaryServiceImpl implements SummaryService {
 //            System.out.println(chat.getChatId());
 //        }
 
-        Boolean isSessionEnded = chatRepository.isLatestChatSessionEnded(patient.getPatientId());
         // 409 : 세션 종료 이후 요약보고서 생성 가능
+        Boolean isSessionEnded = chatRepository.isLatestChatSessionEnded(patient.getPatientId());
         if (!isSessionEnded) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body(CustomApiResponse.createFailWithout(409, "환자 채팅의 세션 종료 이후 요약보고서 생성이 가능합니다."));
         }
 
-        // FastAPI 통신 부분은 나중에 추가
+        // FastAPI - 요청 DTO 빌드
+        ChatSummaryFastApiRequestDto requestDto = ChatSummaryFastApiRequestDto.builder()
+                .disease(disease)
+                .chats(chatHistory)  // List<Chat>을 ChatSummaryFastApiRequestDto에 전달하면 자동 변환됨
+                .build();
 
+        // FastAPI - 엔드포인트 설정
+        String fastApiEndpoint = fastApiUrl + "/api/doctor-ai/summary";
+        String summaryContent = null;
+
+        try {
+            // FastAPI - 서버에 POST 요청 전송
+            ResponseEntity<String> response = restTemplate.postForEntity(fastApiEndpoint, requestDto, String.class);
+
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                // FastAPI - 응답 JSON 파싱
+                ObjectMapper objectMapper = new ObjectMapper();
+                ChatSummaryFastApiResponseDto responseDto = objectMapper.readValue(response.getBody(), ChatSummaryFastApiResponseDto.class);
+                summaryContent = responseDto.getSummary(); // 요약 내용 가져오기
+            } else {
+                // 502 : 응답 상태 코드가 성공 범위가 아님
+                return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                        .body(CustomApiResponse.createFailWithout(502, "AI 서버와의 통신에 실패했습니다. 응답 코드가 성공 범위가 아닙니다."));
+            }
+
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            // 502 : AI 서버와의 통신 실패
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                    .body(CustomApiResponse.createFailWithout(502, "AI 서버와의 통신 중 오류 발생: " + e.getMessage()));
+        } catch (ResourceAccessException e) {
+            // 504 : AI 서버 시간 초과
+            return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT)
+                    .body(CustomApiResponse.createFailWithout(504, "AI 서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요."));
+        } catch (Exception e) {
+            // 500 : JSON 파싱 오류 발생 등 기타 예외
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(CustomApiResponse.createFailWithout(500, "응답 파싱 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."));
+        }
         // 요약 보고서 예제 데이터 생성 (임시로 설정)
         String summaryContent = "환자는 현재 불안 증세를 호소하고 있으며, 상담을 통해 상태를 점검할 필요가 있습니다.";
 
