@@ -36,11 +36,12 @@ public class GlobalExceptionController {
                 .body(CustomApiResponse.createFailWithout(HttpStatus.BAD_REQUEST.value(), errorMessage));
     }
 
-    // RuntimeException 처리 추가
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<CustomApiResponse<?>> handleRuntimeException(RuntimeException e) {
+    // 401 Unauthorized 예외 처리
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<CustomApiResponse<?>> handleUnauthorizedException(UnauthorizedException e) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(CustomApiResponse.createFailWithout(401, e.getMessage()));
+                .body(CustomApiResponse.createFailWithout(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
     }
+
 }

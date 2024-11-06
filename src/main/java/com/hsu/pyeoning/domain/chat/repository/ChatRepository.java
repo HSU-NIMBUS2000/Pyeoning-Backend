@@ -15,11 +15,11 @@ import java.util.Optional;
 public interface ChatRepository extends JpaRepository<Chat, Long> {
     Page<Chat> findByPatient_PatientId(Long patientId, Pageable pageable);
     Page<Chat> findByPatient_PatientCode(String patientCode, Pageable pageable);
+
     // 환자의 가장 최근 메시지 가져오기
     Optional<Chat> findTopByPatientOrderByCreatedAtDesc(Patient patient);
-    // 가장 최신에 session_end가 true로 설정된 채팅부터 그 전 session_end가 true인 채팅까지 가져오기
-    // ChatRepository.java
 
+    // 가장 최신에 session_end가 true로 설정된 채팅부터 그 전 session_end가 true인 채팅까지 가져오기
     @Query("SELECT c FROM Chat c WHERE c.patient = :patient AND c.createdAt > " +
             "(SELECT MAX(c2.createdAt) FROM Chat c2 WHERE c2.patient = :patient AND c2.sessionEnd = true) " +
             "ORDER BY c.createdAt ASC")

@@ -1,5 +1,6 @@
 package com.hsu.pyeoning.global.security.jwt;
 
+import com.hsu.pyeoning.global.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -86,7 +87,7 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(getSignKey(secretKey)).build().parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new RuntimeException("만료되었거나 유효하지 않는 JWT 토큰입니다.");
+            throw new UnauthorizedException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다.");
         }
     }
 

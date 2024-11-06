@@ -8,6 +8,7 @@ import com.hsu.pyeoning.domain.summary.entity.Summary;
 import com.hsu.pyeoning.domain.summary.repository.SummaryRepository;
 import com.hsu.pyeoning.domain.summary.web.dto.ChatSummaryResponseDto;
 import com.hsu.pyeoning.domain.summary.web.dto.SummaryDto;
+import com.hsu.pyeoning.global.exception.UnauthorizedException;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
 import jakarta.transaction.Transactional;
@@ -58,9 +59,11 @@ public class SummaryServiceImpl implements SummaryService {
     public ResponseEntity<CustomApiResponse<?>> makePatientSummary() {
         String currentUserId = authenticationUserUtils.getCurrentUserId();
 
+
+
         // 401 : 환자 정보 찾을 수 없음
         Patient patient = patientRepository.findByPatientCode(currentUserId)
-                .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
+                .orElseThrow(() -> new UnauthorizedException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
 
         // 400 : 병명 필요
         String disease = patient.getPyeoningDisease();
@@ -84,8 +87,18 @@ public class SummaryServiceImpl implements SummaryService {
         String summaryContent = "환자는 현재 불안 증세를 호소하고 있으며, 상담을 통해 상태를 점검할 필요가 있습니다.";
 
         // 요약 보고서 save
+        Summary summary = Summary.builder()
+                .patient(patient)
+                .summaryContent(summaryContent)
+                .build();
+        summaryRepository.save(summary);
 
         // 요약 보고서 데이터 가공
+        ChatSummaryResponseDto data = ChatSummaryResponseDto.builder()
+                .summaryId(summary.getSummaryId()) // 임시 ID
+                .summaryContent(summaryContent)
+                .createdAt(summary.localDateToString()) // ex. 2024.11.06"
+                .build();
 
         // 200 : 요약 보고서 생성 성공
         return ResponseEntity.ok(CustomApiResponse.createSuccess(200, data, "요약 보고서가 성공적으로 생성되었습니다."));
