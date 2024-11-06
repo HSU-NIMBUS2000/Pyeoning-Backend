@@ -12,6 +12,7 @@ import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.HttpServerErrorException;
@@ -136,15 +137,15 @@ public class ChatServiceImpl implements ChatService {
 
         // 환자의 해당 세션동안 대화한 채팅 기록 가져오기
         List<Chat> chats = chatRepository.findChatHistoryBetweenSessions(patient.getPatientId());
-        List<ChatMessageFastApiRequestDto.ChatMessage> chatHistory;
 
         // FastAPI 요청 DTO 빌드
         ChatMessageFastApiRequestDto requestDto = ChatMessageFastApiRequestDto.builder()
                 .disease(patient.getPyeoningDisease())
                 .newChat(sendContent)
-                .chatHistory(chatHistory)
                 .prompt(patient.getPyeoningPrompt())
                 .build();
+        // 채팅 기록을 ChatHistory로 변환
+        requestDto.setChatHistoryFromChats(chats);
 
         String fastApiEndpoint = fastApiUrl + "/api/chat/send";
         String receivedContent = null;
