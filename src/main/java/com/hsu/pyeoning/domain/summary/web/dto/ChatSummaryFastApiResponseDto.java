@@ -9,6 +9,6 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper=false) // warning 해결 : 상위 클래스 필드 제외
 @Data
-public class ChatSummaryFastApiResponseDto extends ChatHistory {
+public class ChatSummaryFastApiResponseDto {
     private String summary;
 }

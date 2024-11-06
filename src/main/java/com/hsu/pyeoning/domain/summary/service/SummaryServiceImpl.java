@@ -1,11 +1,14 @@
 package com.hsu.pyeoning.domain.summary.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.domain.summary.entity.Summary;
 import com.hsu.pyeoning.domain.summary.repository.SummaryRepository;
+import com.hsu.pyeoning.domain.summary.web.dto.ChatSummaryFastApiRequestDto;
+import com.hsu.pyeoning.domain.summary.web.dto.ChatSummaryFastApiResponseDto;
 import com.hsu.pyeoning.domain.summary.web.dto.ChatSummaryResponseDto;
 import com.hsu.pyeoning.domain.summary.web.dto.SummaryDto;
 import com.hsu.pyeoning.global.exception.UnauthorizedException;
@@ -13,9 +16,14 @@ import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -24,11 +32,14 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SummaryServiceImpl implements SummaryService {
+    @Value("${fastapi.url}")
+    private String fastApiUrl;
 
     private final SummaryRepository summaryRepository;
     private final AuthenticationUserUtils authenticationUserUtils;
     private final PatientRepository patientRepository;
     private final ChatRepository chatRepository;
+    private final RestTemplate restTemplate;
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> getPatientSummary(Long patientId) {
@@ -91,7 +102,7 @@ public class SummaryServiceImpl implements SummaryService {
                 .build();
 
         // FastAPI - 엔드포인트 설정
-        String fastApiEndpoint = fastApiUrl + "/api/doctor-ai/summary";
+        String fastApiEndpoint = fastApiUrl + "/api/doctor-ai/summarize";
         String summaryContent = null;
 
         try {
@@ -122,8 +133,6 @@ public class SummaryServiceImpl implements SummaryService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(CustomApiResponse.createFailWithout(500, "응답 파싱 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."));
         }
-        // 요약 보고서 예제 데이터 생성 (임시로 설정)
-        String summaryContent = "환자는 현재 불안 증세를 호소하고 있으며, 상담을 통해 상태를 점검할 필요가 있습니다.";
 
         // 400 : 충분한 대화 내용 필요
         if (summaryContent.isEmpty()) {
