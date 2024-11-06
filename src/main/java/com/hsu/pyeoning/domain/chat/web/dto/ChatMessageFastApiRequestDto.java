@@ -1,6 +1,7 @@
 package com.hsu.pyeoning.domain.chat.web.dto;
 
 import com.hsu.pyeoning.domain.summary.web.dto.ChatSummaryFastApiRequestDto;
+import com.hsu.pyeoning.global.api.dto.ChatHistory;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class ChatMessageFastApiRequestDto {
+public class ChatMessageFastApiRequestDto extends ChatHistory {
     // 병명
     private String disease;
 
@@ -23,21 +24,4 @@ public class ChatMessageFastApiRequestDto {
     // 프롬프트
     private String prompt;
 
-    @Data
-    @NoArgsConstructor
-    public static class ChatMessage {
-        private String sender;
-        private String message;
-
-        public ChatMessage(String sender, String message) {
-            this.sender = sender;
-            this.message = message;
-        }
-    }
-
-    // 편의 메서드 =========================================================
-    // 새로운 메시지를 추가하는 메서드
-    public void addChatMessage(String sender, String message) {
-        this.chatHistory.add(new ChatMessageFastApiRequestDto.ChatMessage(sender, message));
-    }
 }

@@ -12,13 +12,17 @@ import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.beans.factory.annotation.Value;import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,10 +30,13 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
+    @Value("${fastapi.url}")
+    private String fastApiUrl;
 
     private final ChatRepository chatRepository;
     private final PatientRepository patientRepository;
     private final AuthenticationUserUtils authenticationUserUtils;
+    private final RestTemplate restTemplate;
 
     // 의사가 특정 환자의 대화 내용 조회
     @Override
@@ -123,25 +130,44 @@ public class ChatServiceImpl implements ChatService {
 
         String sendContent = chatMessageRequestDto.getChatContent();
 
-        // 환자 Chat save
+        // 환자 Chat 저장
         Chat newPatientChat = Chat.addChat(sendContent, patient, true);
         chatRepository.save(newPatientChat);
 
-        // FastAPI 통신
-        ChatMessageFastApiRequestDto.builder()
+        // 환자의 해당 세션동안 대화한 채팅 기록 가져오기
+        List<Chat> chats = chatRepository.findChatHistoryBetweenSessions(patient.getPatientId());
+        List<ChatMessageFastApiRequestDto.ChatMessage> chatHistory;
+
+        // FastAPI 요청 DTO 빌드
+        ChatMessageFastApiRequestDto requestDto = ChatMessageFastApiRequestDto.builder()
                 .disease(patient.getPyeoningDisease())
                 .newChat(sendContent)
-                .chatHistory()
+                .chatHistory(chatHistory)
+                .prompt(patient.getPyeoningPrompt())
                 .build();
 
-        // 502 : AI 서버와의 통신 실패
+        String fastApiEndpoint = fastApiUrl + "/api/chat/send";
+        String receivedContent = null;
 
-        // 504 : AI 서버 시간초과
+        try {
+            // FastAPI 서버에 POST 요청 전송
+            ResponseEntity<String> response = restTemplate.postForEntity(fastApiEndpoint, requestDto, String.class);
 
-        // FastAPI 통신 성공
-        String receivedContent = "응답응답"; //통신 후 수정 예정
+            if (response.getStatusCode().is2xxSuccessful()) {
+                receivedContent = response.getBody(); // AI의 응답 내용을 가져옴
+            } else {
+                throw new RuntimeException("FastAPI 통신 실패");
+            }
 
-        // 펴닝 응답 Chat save
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            // 502 : AI 서버와의 통신 실패
+            throw new RuntimeException("AI 서버와의 통신 중 오류 발생: " + e.getMessage());
+        } catch (ResourceAccessException e) {
+            // 504 : AI 서버 시간 초과
+            throw new RuntimeException("AI 서버 시간 초과: " + e.getMessage());
+        }
+
+        // 펴닝 응답 Chat 저장
         Chat newPyeoningChat = Chat.addChat(receivedContent, patient, false);
         chatRepository.save(newPyeoningChat);
 
