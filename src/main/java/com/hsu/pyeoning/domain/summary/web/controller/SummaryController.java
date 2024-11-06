@@ -20,9 +20,9 @@ public class SummaryController {
         return summaryService.getPatientSummary(patientId);
     }
 
-    @PostMapping("/create/{patientId}")
-    public ResponseEntity<CustomApiResponse<?>> makePatientChatSummary(@PathVariable Long patientId) {
-        return summaryService.makePatientSummary(patientId);
+    @PostMapping("/create")
+    public ResponseEntity<CustomApiResponse<?>> makePatientChatSummary() {
+        return summaryService.makePatientSummary();
     }
 
 }

@@ -6,6 +6,7 @@ import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.domain.summary.entity.Summary;
 import com.hsu.pyeoning.domain.summary.repository.SummaryRepository;
+import com.hsu.pyeoning.domain.summary.web.dto.ChatSummaryResponseDto;
 import com.hsu.pyeoning.domain.summary.web.dto.SummaryDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
@@ -54,21 +55,24 @@ public class SummaryServiceImpl implements SummaryService {
     // 요약 보고서 생성
     @Override
     @Transactional
-    public ResponseEntity<CustomApiResponse<?>> makePatientSummary(Long patientId) {
+    public ResponseEntity<CustomApiResponse<?>> makePatientSummary() {
+        String currentUserId = authenticationUserUtils.getCurrentUserId();
+
         // 401 : 환자 정보 찾을 수 없음
-        Patient patient = patientRepository.findById(patientId)
+        Patient patient = patientRepository.findByPatientCode(currentUserId)
                 .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
 
-        // 병명 확인
+        // 400 : 병명 필요
         String disease = patient.getPyeoningDisease();
         if (disease == null || disease.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(CustomApiResponse.createFailWithout(400, "정확한 요약을 위해 병명이 필요합니다."));
         }
 
-        // 환자의 채팅 기록 가져오기
+        // 환자의 해당 세션동안 대화한 채팅 기록 가져오기
         List<Chat> chatHistory = chatRepository.findChatHistoryBetweenSessions(patient);
 
+        // 400 : 충분한 대화 내용 필요
         if (chatHistory.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(CustomApiResponse.createFailWithout(400, "정확한 분석을 위해 충분한 양의 대화 내용이 필요합니다."));
@@ -79,12 +83,9 @@ public class SummaryServiceImpl implements SummaryService {
         // 요약 보고서 예제 데이터 생성 (임시로 설정)
         String summaryContent = "환자는 현재 불안 증세를 호소하고 있으며, 상담을 통해 상태를 점검할 필요가 있습니다.";
 
+        // 요약 보고서 save
+
         // 요약 보고서 데이터 가공
-        ChatSummaryResponseDto data = ChatSummaryResponseDto.builder()
-                .summaryId(1L) // 임시 ID
-                .summaryContent(summaryContent)
-                .createdAt(LocalDateTime.now().toString())
-                .build();
 
         // 200 : 요약 보고서 생성 성공
         return ResponseEntity.ok(CustomApiResponse.createSuccess(200, data, "요약 보고서가 성공적으로 생성되었습니다."));
