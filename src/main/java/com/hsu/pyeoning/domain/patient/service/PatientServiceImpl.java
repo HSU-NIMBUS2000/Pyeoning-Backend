@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.hsu.pyeoning.domain.chat.entity.Chat;
+import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,7 @@ public class PatientServiceImpl implements PatientService {
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ChatRepository chatRepository;
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> registerPatient(PatientRegisterDto dto) {
@@ -63,6 +66,15 @@ public class PatientServiceImpl implements PatientService {
                 null,
                 "환자 등록에 성공했습니다."
         );
+
+        // 환자 등록 시 Chat 기본 세팅
+        Chat dafaultChat = Chat.builder()
+                .patient(patient)
+                .chatContent("안녕하세요 펴닝입니다. 무엇을 도와드릴까요?")
+                .chatIsSend(false)
+                .sessionEnd(true)
+                .build();
+        chatRepository.save(dafaultChat);
 
         return ResponseEntity.ok(response);
     }
