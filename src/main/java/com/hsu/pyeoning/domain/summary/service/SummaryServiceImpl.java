@@ -113,7 +113,7 @@ public class SummaryServiceImpl implements SummaryService {
                 // FastAPI - 응답 JSON 파싱
                 ObjectMapper objectMapper = new ObjectMapper();
                 ChatSummaryFastApiResponseDto responseDto = objectMapper.readValue(response.getBody(), ChatSummaryFastApiResponseDto.class);
-                summaryContent = responseDto.getSummary(); // 요약 내용 가져오기
+                summaryContent = responseDto.getData().getSummary(); // 요약 내용 가져오기
             } else {
                 // 502 : 응답 상태 코드가 성공 범위가 아님
                 return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
