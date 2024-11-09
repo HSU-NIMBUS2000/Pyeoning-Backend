@@ -25,8 +25,8 @@ public class Doctor extends BaseEntity {
     @Column(name = "doctor_license", nullable = false)
     private Long doctorLicense; // 의사 면허 번호
 
-    @Column(name = "doctor_email", nullable = false)
-    private String doctorEmail; // 의사 이메일
+    @Column(name = "doctor_phone", nullable = false)
+    private String doctorPhone; // 의사 전화번호
 
     @Column(name = "doctor_password", nullable = false)
     private String doctorPassword; // 의사 비밀번호
