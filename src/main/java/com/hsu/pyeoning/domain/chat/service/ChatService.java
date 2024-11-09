@@ -1,6 +1,7 @@
 package com.hsu.pyeoning.domain.chat.service;
 
 import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
+import com.hsu.pyeoning.domain.chat.web.dto.SessionEndRequestDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import org.springframework.http.ResponseEntity;
 
@@ -10,5 +11,5 @@ public interface ChatService {
     // 환자가 채팅 메세지 전송
     ResponseEntity<CustomApiResponse<?>> processChatMessage(ChatMessageRequestDto chatMessageRequestDto);
     // 세션 종료
-    ResponseEntity<CustomApiResponse<?>> endSessionForPatient();
+    ResponseEntity<CustomApiResponse<?>> endSessionForPatient(SessionEndRequestDto sessionEndRequestDto);
 }

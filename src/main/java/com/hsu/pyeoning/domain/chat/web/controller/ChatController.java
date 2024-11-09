@@ -2,6 +2,7 @@ package com.hsu.pyeoning.domain.chat.web.controller;
 
 import com.hsu.pyeoning.domain.chat.service.ChatServiceImpl;
 import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
+import com.hsu.pyeoning.domain.chat.web.dto.SessionEndRequestDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
 import jakarta.validation.Valid;
@@ -44,7 +45,8 @@ public class ChatController {
 
     // 세션 종료
     @PostMapping("/endSession")
-    public ResponseEntity<CustomApiResponse<?>> endChatSession() {
-        return chatService.endSessionForPatient();
+    public ResponseEntity<CustomApiResponse<?>> endChatSession(
+            @Valid @RequestBody SessionEndRequestDto sessionEndRequestDto) {
+        return chatService.endSessionForPatient(sessionEndRequestDto);
     }
 }
