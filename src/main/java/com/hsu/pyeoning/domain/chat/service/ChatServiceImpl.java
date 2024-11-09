@@ -120,6 +120,7 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     @Override
     public ResponseEntity<CustomApiResponse<?>> processChatMessage(ChatMessageRequestDto chatMessageRequestDto) {
+        // patientCode 가져오기
         String patientCode = authenticationUserUtils.getCurrentUserId(); // patientCode를 반환 ex. LAH8OP2C
 
         // 401 : 환자 정보 찾을 수 없음
@@ -196,18 +197,9 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional
     public ResponseEntity<CustomApiResponse<?>> endSessionForPatient(SessionEndRequestDto sessionEndRequestDto) {
-//        String currentUserPatientCode = authenticationUserUtils.getCurrentUserId(); // 기존 헤더로 토큰 받을 시 patientCode 알아내는 법
-        // 1. SecurityContext에서 인증된 사용자 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        // patientCode 가져오기
+        String patientCode = authenticationUserUtils.getCurrentUserId();
 
-        // 2. 인증 정보가 없을 경우 Unauthorized 응답 반환
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new CustomApiResponse<>(false, "유효하지 않은 사용자입니다."));
-        }
-
-        // 3. patientCode 추출 (예: 인증된 사용자의 ID를 patientCode로 간주)
-        String patientCode = authentication.getName(); // JWT의 subject를 가져옴
         // 401 : 환자 정보 찾을 수 없음
         Patient patient = patientRepository.findByPatientCode(patientCode)
                 .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));

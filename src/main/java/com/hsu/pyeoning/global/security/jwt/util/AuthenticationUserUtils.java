@@ -13,4 +13,5 @@ public class AuthenticationUserUtils {
         System.out.println((String) authentication.getPrincipal());
         return (String) authentication.getPrincipal();
     }
+
 }
