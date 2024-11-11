@@ -29,6 +29,7 @@ import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -40,6 +41,7 @@ public class PatientServiceImpl implements PatientService {
     private final JwtTokenProvider jwtTokenProvider;
     private final ChatRepository chatRepository;
 
+    @Transactional
     @Override
     public ResponseEntity<CustomApiResponse<?>> registerPatient(PatientRegisterDto dto) {
         String doctorLicenseStr = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -92,6 +94,7 @@ public class PatientServiceImpl implements PatientService {
         return ResponseEntity.ok(new CustomApiResponse<>(200, token, "환자 로그인에 성공했습니다."));
     }
 
+    @Transactional
     @Override
     public ResponseEntity<CustomApiResponse<?>> modifyPrompt(Long patientId, ModifyPromptDto dto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
