@@ -1,6 +1,6 @@
 package com.hsu.pyeoning.domain.chat.web.controller;
 
-import com.hsu.pyeoning.domain.chat.service.ChatServiceImpl;
+import com.hsu.pyeoning.domain.chat.service.ChatService;
 import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final ChatServiceImpl chatService;
+    private final ChatService chatService;
     private final AuthenticationUserUtils authenticationUserUtils;
 
     // 의사가 특정 환자의 대화 내용 조회

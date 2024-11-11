@@ -21,6 +21,7 @@ public class DoctorServiceImpl implements DoctorService {
     private final JwtTokenProvider jwtTokenProvider;
 
     // 의사 등록
+    @Override
     public ResponseEntity<CustomApiResponse<?>> registDoctor(DoctorRegisterDto dto) {
 
         // 면허 번호 중복 확인
@@ -42,6 +43,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     // 의사 면허 중복 확인
+    @Override
     public ResponseEntity<CustomApiResponse<?>> checkLicenseNumber(CheckLicenseDto dto) {
         boolean isDuplicate = isLicenseNumberDuplicate(dto.getDoctorLicense());
         if (isDuplicate) {
@@ -56,6 +58,7 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     // 의사 로그인
+    @Override
     public ResponseEntity<CustomApiResponse<?>> doctorLogin(DoctorLoginDto dto) {
         Doctor doctor = doctorRepository.findByDoctorLicense(dto.getDoctorLicense())
                 .orElse(null);
