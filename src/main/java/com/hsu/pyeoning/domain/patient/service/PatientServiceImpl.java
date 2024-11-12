@@ -13,7 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.core.Authentication;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,7 @@ public class PatientServiceImpl implements PatientService {
     private final DoctorRepository doctorRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final ChatRepository chatRepository;
+    private final JavaMailSender mailSender;
 
     @Transactional
     @Override
@@ -62,6 +65,9 @@ public class PatientServiceImpl implements PatientService {
                 .build();
 
         patientRepository.save(patient);
+
+        // 환자 코드 이메일로 전송
+        sendPatientCodeEmail(patient.getPatientEmail(), patient.getPatientCode());
 
         CustomApiResponse<?> response = new CustomApiResponse<>(
                 HttpStatus.OK.value(),
@@ -274,5 +280,14 @@ public class PatientServiceImpl implements PatientService {
             sb.append(chars.charAt(random.nextInt(chars.length())));
         }
         return sb.toString();
+    }
+
+    // 이메일 전송 메소드
+    private void sendPatientCodeEmail(String email, String patientCode) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("환자 코드 안내");
+        message.setText("안녕하세요. 환자님의 환자 코드는 " + patientCode + "입니다.");
+        mailSender.send(message);
     }
 }
