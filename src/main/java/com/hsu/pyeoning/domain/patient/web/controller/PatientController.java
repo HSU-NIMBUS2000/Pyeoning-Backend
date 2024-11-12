@@ -30,7 +30,7 @@ public class PatientController {
 
     @PutMapping("/{patientId}/modifyPrompt")
     public ResponseEntity<CustomApiResponse<?>> modifyPrompt(
-            @PathVariable Long patientId,
+            @PathVariable("patientId") Long patientId,
             @Valid @RequestBody ModifyPromptDto dto) {
         return patientService.modifyPrompt(patientId, dto);
     }

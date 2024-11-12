@@ -14,7 +14,6 @@ public class ModifyPromptDto {
     
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date patientBirth;
-    
     private String pyeoningDisease;
     private String pyeoningPrompt;
     private String pyeoningSpecial;
