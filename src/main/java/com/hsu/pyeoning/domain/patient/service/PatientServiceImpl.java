@@ -133,18 +133,28 @@ public class PatientServiceImpl implements PatientService {
 
         if (dto.getPatientName() != null) {
             patient.setPatientName(dto.getPatientName());
+        } else {
+            dto.setPatientName(patient.getPatientName());
         }
         if (dto.getPatientBirth() != null) {
             patient.setPatientBirth(dto.getPatientBirth());
+        } else {
+            dto.setPatientBirth(patient.getPatientBirth());
         }
         if (dto.getPyeoningDisease() != null) {
             patient.setPyeoningDisease(dto.getPyeoningDisease());
+        } else {
+            dto.setPyeoningDisease(patient.getPyeoningDisease());
         }
         if (dto.getPyeoningPrompt() != null) {
             patient.setPyeoningPrompt(dto.getPyeoningPrompt());
+        } else {
+            dto.setPyeoningPrompt(patient.getPyeoningPrompt());
         }
         if (dto.getPyeoningSpecial() != null) {
             patient.setPyeoningSpecial(dto.getPyeoningSpecial());
+        } else {
+            dto.setPyeoningSpecial(patient.getPyeoningSpecial());
         }
 
         patientRepository.save(patient);
