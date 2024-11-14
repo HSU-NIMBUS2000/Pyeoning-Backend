@@ -11,5 +11,5 @@ public interface ChatService {
     // 환자가 채팅 메세지 전송
     ResponseEntity<CustomApiResponse<?>> processChatMessage(ChatMessageRequestDto chatMessageRequestDto);
     // 세션 종료
-    ResponseEntity<CustomApiResponse<?>> endSessionForPatient(SessionEndRequestDto sessionEndRequestDto);
+    ResponseEntity<CustomApiResponse<?>> endSessionForPatient();
 }

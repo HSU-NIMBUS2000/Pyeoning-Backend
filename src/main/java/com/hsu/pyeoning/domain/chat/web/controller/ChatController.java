@@ -45,8 +45,7 @@ public class ChatController {
 
     // 세션 종료
     @PostMapping("/endSession")
-    public ResponseEntity<CustomApiResponse<?>> endChatSession(
-            @Valid @RequestBody SessionEndRequestDto sessionEndRequestDto) {
-        return chatService.endSessionForPatient(sessionEndRequestDto);
+    public ResponseEntity<CustomApiResponse<?>> endChatSession() {
+        return chatService.endSessionForPatient();
     }
 }

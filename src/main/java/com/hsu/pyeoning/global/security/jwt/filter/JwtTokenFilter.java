@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -32,23 +33,22 @@ public class JwtTokenFilter extends GenericFilterBean {
             return;
         }
 
+        // 요청을 ContentCachingRequestWrapper로 감싸서 여러 번 읽을 수 있게 함
+        ContentCachingRequestWrapper cachingRequest = new ContentCachingRequestWrapper(request);
+
         // 1. 헤더에서 토큰 확인
-        String token = jwtTokenProvider.resolveToken(request);
+        String token = jwtTokenProvider.resolveToken(cachingRequest);
 
         // 2. 헤더에 토큰이 없으면 바디에서 토큰을 확인
         if (token == null) {
-            String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
-
-            // "token": "Bearer "로 시작하는 토큰 값 추출
-            if (body.contains("\"token\": \"Bearer ")) {
-                int startIndex = body.indexOf("\"token\": \"Bearer ") + 10; // "token": " 이후 인덱스
-                int endIndex = body.indexOf("\"", startIndex);
-                if (endIndex > startIndex) {
-                    token = body.substring(startIndex, endIndex);
-                }
+            String body = StreamUtils.copyToString(cachingRequest.getInputStream(), StandardCharsets.UTF_8);
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(body);
+            JsonNode tokenNode = rootNode.path("token");
+            if (!tokenNode.isMissingNode()) {
+                token = tokenNode.asText();
             }
         }
-
         // log
         System.out.println("token: " + token);
 
@@ -57,7 +57,8 @@ public class JwtTokenFilter extends GenericFilterBean {
             jwtTokenProvider.setSecurityContext(token);
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        // 다시 요청을 필터 체인으로 보냄
+        filterChain.doFilter(cachingRequest, servletResponse);
     }
 
 }

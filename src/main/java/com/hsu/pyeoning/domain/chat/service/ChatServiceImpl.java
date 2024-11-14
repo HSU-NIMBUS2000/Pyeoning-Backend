@@ -196,7 +196,7 @@ public class ChatServiceImpl implements ChatService {
     // 세션 종료
     @Override
     @Transactional
-    public ResponseEntity<CustomApiResponse<?>> endSessionForPatient(SessionEndRequestDto sessionEndRequestDto) {
+    public ResponseEntity<CustomApiResponse<?>> endSessionForPatient() {
         // patientCode 가져오기
         String patientCode = authenticationUserUtils.getCurrentUserId();
 
