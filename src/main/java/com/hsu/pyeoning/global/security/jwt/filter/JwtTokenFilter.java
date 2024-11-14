@@ -40,8 +40,12 @@ public class JwtTokenFilter extends GenericFilterBean {
         String token = jwtTokenProvider.resolveToken(cachingRequest);
 
         // 2. 헤더에 토큰이 없으면 바디에서 토큰을 확인
-        if (token == null) {
-            String body = StreamUtils.copyToString(cachingRequest.getInputStream(), StandardCharsets.UTF_8);
+        // 바디에서 토큰을 확인할 특정 경로들 (세션종료, 요약보고서 생성
+        boolean shouldReadBodyForToken = path.equals("/api/chat/endSession") || path.equals("/api/summary/create");
+
+        // 특정 경로에 대해서만 바디에서 토큰 확인
+        if (token == null && shouldReadBodyForToken) {
+            String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(body);
             JsonNode tokenNode = rootNode.path("token");
