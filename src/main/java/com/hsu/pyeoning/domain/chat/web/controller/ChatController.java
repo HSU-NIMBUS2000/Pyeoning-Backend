@@ -2,6 +2,7 @@ package com.hsu.pyeoning.domain.chat.web.controller;
 
 import com.hsu.pyeoning.domain.chat.service.ChatService;
 import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
+import com.hsu.pyeoning.domain.chat.web.dto.SessionEndRequestDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
 import jakarta.validation.Valid;
@@ -42,7 +43,7 @@ public class ChatController {
         return chatService.processChatMessage(chatMessageRequestDTO);
     }
 
-    // 세션 종료
+    // 세션 종료 (body로 token 받기)
     @PostMapping("/endSession")
     public ResponseEntity<CustomApiResponse<?>> endChatSession() {
         return chatService.endSessionForPatient();

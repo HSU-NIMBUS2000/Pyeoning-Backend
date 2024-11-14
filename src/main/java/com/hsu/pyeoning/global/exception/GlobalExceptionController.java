@@ -3,6 +3,8 @@ package com.hsu.pyeoning.global.exception;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +20,17 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionController {
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionController.class);
+
     // @Valid 유효성 검사 실패 시
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomApiResponse<?>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         String errorMessage = e.getBindingResult().getAllErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.joining("; "));
+
+        // 로그 추가
+        logger.error("MethodArgumentNotValidException 발생: {}", errorMessage);
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -37,6 +44,9 @@ public class GlobalExceptionController {
                 .map(ConstraintViolation::getMessage)
                 .collect(Collectors.joining("; "));
 
+        // 로그 추가
+        logger.error("ConstraintViolationException 발생: {}", errorMessage);
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(CustomApiResponse.createFailWithout(HttpStatus.BAD_REQUEST.value(), errorMessage));
     }
@@ -44,6 +54,8 @@ public class GlobalExceptionController {
     // Unauthorized 예외의 경우
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<CustomApiResponse<?>> handleUnauthorizedException(UnauthorizedException e) {
+        logger.warn("UnauthorizedException 발생: {}", e.getMessage());
+
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(CustomApiResponse.createFailWithout(HttpStatus.UNAUTHORIZED.value(), e.getMessage()));
@@ -56,6 +68,10 @@ public class GlobalExceptionController {
                 "1. 토큰을 삽입했는지 확인해 주세요. " +
                 "2. 토큰의 유효기간을 확인해 주세요 (새로 발급하여 시도해보세요). " +
                 "문제가 해결되지 않는다면, 관리자에게 문의해 주세요.";
+
+        // 전체 예외 로그 출력
+        logger.error("Exception 발생: {}", exception.getMessage(), exception);
+
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(CustomApiResponse.createFailWithout(HttpStatus.INTERNAL_SERVER_ERROR.value(), errorMessage));

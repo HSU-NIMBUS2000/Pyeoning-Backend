@@ -120,10 +120,11 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     @Override
     public ResponseEntity<CustomApiResponse<?>> processChatMessage(ChatMessageRequestDto chatMessageRequestDto) {
-        String currentUserId = authenticationUserUtils.getCurrentUserId(); // patientCode를 반환 ex. LAH8OP2C
+        // patientCode 가져오기
+        String patientCode = authenticationUserUtils.getCurrentUserId(); // patientCode를 반환 ex. LAH8OP2C
 
         // 401 : 환자 정보 찾을 수 없음
-        Patient patient = patientRepository.findByPatientCode(currentUserId)
+        Patient patient = patientRepository.findByPatientCode(patientCode)
                 .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
 
         String sendContent = chatMessageRequestDto.getChatContent();
@@ -196,10 +197,11 @@ public class ChatServiceImpl implements ChatService {
     @Override
     @Transactional
     public ResponseEntity<CustomApiResponse<?>> endSessionForPatient() {
-        String currentUserId = authenticationUserUtils.getCurrentUserId(); //patientCode
+        // patientCode 가져오기
+        String patientCode = authenticationUserUtils.getCurrentUserId();
 
         // 401 : 환자 정보 찾을 수 없음
-        Patient patient = patientRepository.findByPatientCode(currentUserId)
+        Patient patient = patientRepository.findByPatientCode(patientCode)
                 .orElseThrow(() -> new RuntimeException("유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
 
         // 환자의 마지막 채팅 메시지 가져오기

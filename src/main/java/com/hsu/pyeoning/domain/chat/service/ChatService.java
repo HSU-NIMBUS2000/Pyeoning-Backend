@@ -1,6 +1,7 @@
 package com.hsu.pyeoning.domain.chat.service;
 
 import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageRequestDto;
+import com.hsu.pyeoning.domain.chat.web.dto.SessionEndRequestDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import org.springframework.http.ResponseEntity;
 

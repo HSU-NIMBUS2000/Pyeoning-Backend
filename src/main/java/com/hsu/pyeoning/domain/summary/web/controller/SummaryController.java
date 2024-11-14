@@ -15,11 +15,13 @@ public class SummaryController {
 
     private final SummaryServiceImpl summaryService;
 
+    // 요약보고서 조회
     @GetMapping("/patientSummary/{patientId}")
     public ResponseEntity<CustomApiResponse<?>> getPatientSummary(@PathVariable Long patientId) {
         return summaryService.getPatientSummary(patientId);
     }
 
+    // 요약보고서 생성 (body로 token 받기)
     @PostMapping("/create")
     public ResponseEntity<CustomApiResponse<?>> makePatientChatSummary() {
         return summaryService.makePatientSummary();
