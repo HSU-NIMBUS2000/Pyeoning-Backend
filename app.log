@@ -20304,3 +20304,466 @@ java.io.EOFException: null
 2024-11-15T04:07:16.828+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
 2024-11-15T04:07:18.643+09:00 DEBUG 49270 --- [pyeoning] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
 2024-11-15T04:07:18.643+09:00 DEBUG 49270 --- [pyeoning] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Fill pool skipped, pool has sufficient level or currently being filled.
+2024-11-15T04:07:48.648+09:00 DEBUG 49270 --- [pyeoning] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2024-11-15T04:07:48.651+09:00 DEBUG 49270 --- [pyeoning] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Fill pool skipped, pool has sufficient level or currently being filled.
+2024-11-15T04:08:16.648+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.security.web.FilterChainProxy        : Securing POST /api/summary/create
+2024-11-15T04:08:16.659+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.security.web.FilterChainProxy        : Secured POST /api/summary/create
+2024-11-15T04:08:16.660+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.web.servlet.DispatcherServlet        : POST "/api/summary/create", parameters={}
+2024-11-15T04:08:16.660+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.hsu.pyeoning.domain.summary.web.controller.SummaryController#makePatientChatSummary()
+2024-11-15T04:08:16.660+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2024-11-15T04:08:16.662+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(547246741<open>)] for JPA transaction
+2024-11-15T04:08:16.662+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.hsu.pyeoning.domain.summary.service.SummaryServiceImpl.makePatientSummary]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2024-11-15T04:08:16.663+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.t.internal.TransactionImpl         : On TransactionImpl creation, JpaCompliance#isJpaTransactionComplianceEnabled == false
+2024-11-15T04:08:16.663+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.t.internal.TransactionImpl         : begin
+2024-11-15T04:08:16.682+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@2da503a0]
+2024-11-15T04:08:16.685+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.sql.ast.create         : Created new SQL alias : p1_0
+2024-11-15T04:08:16.686+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.sql.ast.create         : Registration of TableGroup [StandardTableGroup(com.hsu.pyeoning.domain.patient.entity.Patient(10))] with identifierForTableGroup [com.hsu.pyeoning.domain.patient.entity.Patient] for NavigablePath [com.hsu.pyeoning.domain.patient.entity.Patient] 
+2024-11-15T04:08:16.686+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.sql.ast.create         : Registration of TableGroup [org.hibernate.sql.ast.tree.from.LazyTableGroup@2b77da69] with identifierForTableGroup [com.hsu.pyeoning.domain.patient.entity.Patient.doctorId] for NavigablePath [com.hsu.pyeoning.domain.patient.entity.Patient.doctorId] 
+2024-11-15T04:08:16.687+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.q.sqm.sql.BaseSqmToSqlAstConverter   : Determining mapping-model type for SqmParameter : org.hibernate.query.sqm.tree.expression.SqmJpaCriteriaParameterWrapper@1a35fa3a
+2024-11-15T04:08:16.687+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.q.sqm.sql.BaseSqmToSqlAstConverter   : Determining mapping-model type for SqmPath : SqmBasicValuedSimplePath(com.hsu.pyeoning.domain.patient.entity.Patient(10).patientCode) 
+2024-11-15T04:08:16.687+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.graph.AST      : DomainResult Graph:
+ \-EntityResultImpl [com.hsu.pyeoning.domain.patient.entity.Patient(10)]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).createdAt]
+ |  +-EntityDelayedFetchImpl [com.hsu.pyeoning.domain.patient.entity.Patient(10).doctorId]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).patientBirth]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).patientCode]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).patientEmail]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).patientGender]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).patientName]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).pyeoningDisease]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).pyeoningPrompt]
+ |  +-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).pyeoningSpecial]
+ |  \-BasicFetch [com.hsu.pyeoning.domain.patient.entity.Patient(10).updatedAt]
+
+2024-11-15T04:08:16.687+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.sql.ast.tree           : SQL AST Tree:
+    SelectStatement {
+      FromClause {
+        StandardTableGroup (p1 : com.hsu.pyeoning.domain.patient.entity.Patient(10)) {
+          primaryTableReference : patient as p1_0
+          TableGroupJoins {
+            left  join LazyTableGroup (di1 : com.hsu.pyeoning.domain.patient.entity.Patient(10).doctorId) {
+            }
+          }
+        }
+      }
+    }
+
+2024-11-15T04:08:16.688+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.sql.exec               : Skipping reading Query result cache data: cache-enabled = false, cache-mode = NORMAL
+2024-11-15T04:08:16.688+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Initializer list:
+	  com.hsu.pyeoning.domain.patient.entity.Patient(10) -> EntityResultInitializer(com.hsu.pyeoning.domain.patient.entity.Patient(10))@463191933 (SingleTableEntityPersister(com.hsu.pyeoning.domain.patient.entity.Patient))
+	  com.hsu.pyeoning.domain.patient.entity.Patient(10).doctorId -> EntityDelayedFetchInitializer(com.hsu.pyeoning.domain.patient.entity.Patient(10).doctorId)@454887312 (ToOneAttributeMapping(NavigableRole[com.hsu.pyeoning.domain.patient.entity.Patient.doctorId])@400536488)
+
+2024-11-15T04:08:16.688+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.SQL                        : 
+    /* <criteria> */ select
+        p1_0.patient_id,
+        p1_0.created_at,
+        p1_0.doctor_id,
+        p1_0.patient_birth,
+        p1_0.patient_code,
+        p1_0.patient_email,
+        p1_0.patient_gender,
+        p1_0.patient_name,
+        p1_0.pyeoning_disease,
+        p1_0.pyeoning_prompt,
+        p1_0.pyeoning_special,
+        p1_0.updated_at 
+    from
+        patient p1_0 
+    where
+        p1_0.patient_code=?
+2024-11-15T04:08:16.697+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [5]
+2024-11-15T04:08:16.697+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.patient.entity.Patient(10)): 5
+2024-11-15T04:08:16.697+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.patient.entity.Patient(10)#5] : 899166576
+2024-11-15T04:08:16.697+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [2]
+2024-11-15T04:08:16.697+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [2024-11-07T06:34:18.259453]
+2024-11-15T04:08:16.697+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-12-12]
+2024-11-15T04:08:16.697+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [1FTDULI3]
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [hjnee222@gmail.com]
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [FEMALE]
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [7] - [김환자]
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [8] - [string]
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [9] - [이 환자는 불안장애가 심하기 때문에 불안해지지 않도록 도와주어야 합니다..]
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [10] - [string]
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [11] - [2024-11-12T11:30:13.190524]
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.patient.entity.Patient(10)#5
+2024-11-15T04:08:16.698+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@464a91d4
+2024-11-15T04:08:16.700+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Processing flush-time cascades
+2024-11-15T04:08:16.700+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Dirty checking collections
+2024-11-15T04:08:16.700+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Flushed: 0 insertions, 0 updates, 0 deletions to 1 objects
+2024-11-15T04:08:16.700+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Flushed: 0 (re)creations, 0 updates, 0 removals to 0 collections
+2024-11-15T04:08:16.700+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : Listing entities:
+2024-11-15T04:08:16.701+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.patient.entity.Patient{createdAt=2024-11-07T06:34:18.259453, patientName=김환자, pyeoningSpecial=string, patientId=5, doctorId=<uninitialized>, patientGender=FEMALE, patientBirth=2024-12-12, patientEmail=hjnee222@gmail.com, pyeoningPrompt=이 환자는 불안장애가 심하기 때문에 불안해지지 않도록 도와주어야 합니다.., pyeoningDisease=string, patientCode=1FTDULI3, updatedAt=2024-11-12T11:30:13.190524}
+2024-11-15T04:08:16.701+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.sql.exec               : Skipping reading Query result cache data: cache-enabled = false, cache-mode = NORMAL
+2024-11-15T04:08:16.701+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Initializer list:
+	  com.hsu.pyeoning.domain.chat.entity.Chat(c).patient -> EntityDelayedFetchInitializer(com.hsu.pyeoning.domain.chat.entity.Chat(c).patient)@1585605252 (ToOneAttributeMapping(NavigableRole[com.hsu.pyeoning.domain.chat.entity.Chat.patient])@1340859245)
+	  com.hsu.pyeoning.domain.chat.entity.Chat(c) -> EntityResultInitializer(com.hsu.pyeoning.domain.chat.entity.Chat(c))@1289000113 (SingleTableEntityPersister(com.hsu.pyeoning.domain.chat.entity.Chat))
+
+2024-11-15T04:08:16.701+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.SQL                        : 
+    /* SELECT
+        c 
+    FROM
+        Chat c 
+    WHERE
+        c.patient.id = :patientId 
+        AND c.createdAt > (
+            SELECT
+                c1.createdAt     
+            FROM
+                Chat c1     
+            WHERE
+                c1.patient.id = :patientId     
+                AND c1.sessionEnd = true     
+            ORDER BY
+                c1.createdAt DESC     
+            OFFSET
+                1 ROW 
+            FETCH
+                FIRST 1 ROW ONLY 
+        ) 
+    ORDER BY
+        c.createdAt ASC  */ select
+            c1_0.chat_id,
+            c1_0.chat_content,
+            c1_0.chat_is_send,
+            c1_0.created_at,
+            c1_0.patient_id,
+            c1_0.session_end,
+            c1_0.updated_at 
+        from
+            chat c1_0 
+        where
+            c1_0.patient_id=? 
+            and c1_0.created_at>(
+                select
+                    c2_0.created_at 
+                from
+                    chat c2_0 
+                where
+                    c2_0.patient_id=? 
+                    and c2_0.session_end=1 
+                order by
+                    c2_0.created_at desc 
+                limit
+                    1, 1
+            ) 
+        order by
+            c1_0.created_at
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [125]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 125
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#125] : 1720141024
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕 안녕]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-09T15:03:40.211696]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-09T15:03:40.211696]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#125
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [126]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 126
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#126] : 260831285
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕하세요, 김환자님. 오늘은 어떤 계획을 가지고 계신가요?]
+2024-11-15T04:08:16.709+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [false]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-09T15:03:43.538067]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-09T15:03:43.538067]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#126
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [127]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 127
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#127] : 1118841388
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T13:40:12.640150]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T13:40:12.640150]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#127
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [128]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 128
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#128] : 516736734
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.710+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T13:41:50.556416]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T13:41:50.556416]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#128
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [129]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 129
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#129] : 1635859015
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T13:44:54.592799]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T13:44:54.592799]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#129
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [130]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 130
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#130] : 832257042
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T13:45:28.613276]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T13:45:28.613276]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#130
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [131]
+2024-11-15T04:08:16.711+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 131
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#131] : 1924759879
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T13:46:01.945667]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T13:46:01.945667]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#131
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [132]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 132
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#132] : 180044792
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [양일 매진]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T13:48:55.331168]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.712+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T13:48:55.331168]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#132
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [133]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 133
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#133] : 1644168170
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T14:17:55.315283]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T14:17:55.315283]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#133
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [136]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 136
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#136] : 169072660
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T20:03:14.534188]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.718+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T20:03:14.534188]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#136
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [137]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 137
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#137] : 874435496
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [ㅇ]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [false]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T20:03:14.589350]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T20:03:14.589350]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#137
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [138]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 138
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#138] : 1693114960
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T20:03:32.228058]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T20:03:32.228058]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#138
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [139]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 139
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#139] : 110604916
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T20:04:18.123397]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.719+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T20:04:18.123397]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#139
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [140]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 140
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#140] : 315623882
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T20:04:23.283998]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T20:04:23.283998]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#140
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [141]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 141
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#141] : 1343298475
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.720+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T20:14:18.606391]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T20:14:18.606391]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#141
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [142]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 142
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#142] : 1666878363
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [안녕]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-13T20:14:28.448135]
+2024-11-15T04:08:16.721+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-13T20:14:28.448135]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#142
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [145]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 145
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#145] : 1483047318
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [흥 난 자러 간다 빠이]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-14T18:01:01.943382]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-14T18:01:01.943382]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#145
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [146]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 146
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#146] : 1248419081
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [흥 난 자러 간다 빠이]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [true]
+2024-11-15T04:08:16.722+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-14T23:42:36.110951]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [false]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-14T23:42:36.110951]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#146
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [147]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Hydrated EntityKey (com.hsu.pyeoning.domain.chat.entity.Chat(c)): 147
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Created new entity instance [com.hsu.pyeoning.domain.chat.entity.Chat(c)#147] : 310238124
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [4] - [5]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [1] - [잘 주무세요, 김환자님! 편안한 밤 되시길 바래요.]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [2] - [false]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [3] - [2024-11-14T23:42:40.207342]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [5] - [true]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [6] - [2024-11-14T23:49:53.911301]
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.orm.results.loading.entity   : (EntityResultInitializer) Done materializing entityInstance : com.hsu.pyeoning.domain.chat.entity.Chat(c)#147
+2024-11-15T04:08:16.723+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.entity.internal.EntityAssembler@e9e359d
+2024-11-15T04:08:16.724+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Processing flush-time cascades
+2024-11-15T04:08:16.724+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Dirty checking collections
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Flushed: 0 insertions, 0 updates, 0 deletions to 20 objects
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Flushed: 0 (re)creations, 0 updates, 0 removals to 0 collections
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : Listing entities:
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T14:17:55.315283, chatId=133, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T14:17:55.315283}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:48:55.331168, chatId=132, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=양일 매진, chatIsSend=true, updatedAt=2024-11-13T13:48:55.331168}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:46:01.945667, chatId=131, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:46:01.945667}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:45:28.613276, chatId=130, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:45:28.613276}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:03:14.589350, chatId=137, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=ㅇ, chatIsSend=false, updatedAt=2024-11-13T20:03:14.589350}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:03:14.534188, chatId=136, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:03:14.534188}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:14:18.606391, chatId=141, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:14:18.606391}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:04:23.283998, chatId=140, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:04:23.283998}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:04:18.123397, chatId=139, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:04:18.123397}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:03:32.228058, chatId=138, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:03:32.228058}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-14T18:01:01.943382, chatId=145, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=흥 난 자러 간다 빠이, chatIsSend=true, updatedAt=2024-11-14T18:01:01.943382}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:14:28.448135, chatId=142, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:14:28.448135}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-14T23:42:40.207342, chatId=147, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=true, chatContent=잘 주무세요, 김환자님! 편안한 밤 되시길 바래요., chatIsSend=false, updatedAt=2024-11-14T23:49:53.911301}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-14T23:42:36.110951, chatId=146, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=흥 난 자러 간다 빠이, chatIsSend=true, updatedAt=2024-11-14T23:42:36.110951}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-09T15:03:40.211696, chatId=125, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕 안녕, chatIsSend=true, updatedAt=2024-11-09T15:03:40.211696}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:44:54.592799, chatId=129, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:44:54.592799}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.patient.entity.Patient{createdAt=2024-11-07T06:34:18.259453, patientName=김환자, pyeoningSpecial=string, patientId=5, doctorId=<uninitialized>, patientGender=FEMALE, patientBirth=2024-12-12, patientEmail=hjnee222@gmail.com, pyeoningPrompt=이 환자는 불안장애가 심하기 때문에 불안해지지 않도록 도와주어야 합니다.., pyeoningDisease=string, patientCode=1FTDULI3, updatedAt=2024-11-12T11:30:13.190524}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:41:50.556416, chatId=128, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:41:50.556416}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:40:12.640150, chatId=127, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:40:12.640150}
+2024-11-15T04:08:16.725+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-09T15:03:43.538067, chatId=126, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕하세요, 김환자님. 오늘은 어떤 계획을 가지고 계신가요?, chatIsSend=false, updatedAt=2024-11-09T15:03:43.538067}
+2024-11-15T04:08:16.726+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.sql.exec               : Skipping reading Query result cache data: cache-enabled = false, cache-mode = NORMAL
+2024-11-15T04:08:16.726+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Initializer list is empty
+2024-11-15T04:08:16.726+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.SQL                        : 
+    /* SELECT
+        c.sessionEnd 
+    FROM
+        Chat c 
+    WHERE
+        c.patient.id = :patientId 
+    ORDER BY
+        c.createdAt DESC 
+    LIMIT
+        1 */ select
+            c1_0.session_end 
+        from
+            chat c1_0 
+        where
+            c1_0.patient_id=? 
+        order by
+            c1_0.created_at desc 
+        limit
+            1
+2024-11-15T04:08:16.734+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.basic.BasicResultAssembler@520763b1
+2024-11-15T04:08:16.734+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [true]
+2024-11-15T04:08:16.735+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.web.client.RestTemplate              : HTTP POST http://localhost:81/api/doctor-ai/summarize
+2024-11-15T04:08:16.736+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.web.client.RestTemplate              : Accept=[text/plain, application/json, application/*+json, */*]
+2024-11-15T04:08:16.736+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.web.client.RestTemplate              : Writing [ChatSummaryFastApiRequestDto(disease=string, chatHistory=[ChatHistory.ChatMessage(sender=김환자, message=안녕 안녕), ChatHistory.ChatMessage(sender=펴닝, message=안녕하세요, 김환자님. 오늘은 어떤 계획을 가지고 계신가요?), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=양일 매진), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=펴닝, message=ㅇ), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=안녕), ChatHistory.ChatMessage(sender=김환자, message=흥 난 자러 간다 빠이), ChatHistory.ChatMessage(sender=김환자, message=흥 난 자러 간다 빠이), ChatHistory.ChatMessage(sender=펴닝, message=잘 주무세요, 김환자님! 편안한 밤 되시길 바래요.)])] with org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
+2024-11-15T04:08:16.737+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] s.n.www.protocol.http.HttpURLConnection  : sun.net.www.MessageHeader@6ce033607 pairs: {POST /api/doctor-ai/summarize HTTP/1.1: null}{Accept: text/plain, application/json, application/*+json, */*}{Content-Type: application/json}{User-Agent: Java/21.0.3}{Host: localhost:81}{Connection: keep-alive}{Transfer-Encoding: chunked}
+2024-11-15T04:08:18.655+09:00 DEBUG 49270 --- [pyeoning] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=1, idle=9, waiting=0)
+2024-11-15T04:08:18.656+09:00 DEBUG 49270 --- [pyeoning] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Fill pool skipped, pool has sufficient level or currently being filled.
+2024-11-15T04:08:30.861+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] s.n.www.protocol.http.HttpURLConnection  : sun.net.www.MessageHeader@336f86215 pairs: {null: HTTP/1.1 200 OK}{date: Thu, 14 Nov 2024 19:08:15 GMT}{server: uvicorn}{content-length: 825}{content-type: application/json}
+2024-11-15T04:08:30.863+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.web.client.RestTemplate              : Response 200 OK
+2024-11-15T04:08:30.865+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.web.client.RestTemplate              : Reading to [java.lang.String] as "application/json"
+2024-11-15T04:08:30.888+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(547246741<open>)] for JPA transaction
+2024-11-15T04:08:30.888+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2024-11-15T04:08:30.890+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.j.internal.PersistenceUnitUtilImpl   : jakarta.persistence.PersistenceUnitUtil.getIdentifier is only intended to work with enhanced entities (although Hibernate also adapts this support to its proxies); however the passed entity was not enhanced (nor a proxy).. may not be able to read identifier
+2024-11-15T04:08:30.903+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.d.auditing.AuditingHandlerSupport    : Touched com.hsu.pyeoning.domain.summary.entity.Summary@2fa6309b - Last modification at 2024-11-15T04:08:30.899574 by unknown
+2024-11-15T04:08:30.904+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.engine.spi.ActionQueue     : Executing identity-insert immediately
+2024-11-15T04:08:30.919+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.SQL                        : 
+    /* insert for
+        com.hsu.pyeoning.domain.summary.entity.Summary */insert 
+    into
+        summary (created_at, patient_id, summary_content, updated_at) 
+    values
+        (?, ?, ?, ?)
+2024-11-15T04:08:30.940+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Initializer list is empty
+2024-11-15T04:08:30.940+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results.loading        : Calling top-level assembler (0 / 1) : org.hibernate.sql.results.graph.basic.BasicResultAssembler@2d3c86ab
+2024-11-15T04:08:30.940+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] org.hibernate.orm.results                : Extracted JDBC value [0] - [4]
+2024-11-15T04:08:30.941+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.id.IdentifierGeneratorHelper         : Extracted generated values [com.hsu.pyeoning.domain.summary.entity.Summary]: [Ljava.lang.Object;@510c3e3c
+2024-11-15T04:08:30.944+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2024-11-15T04:08:30.944+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(547246741<open>)]
+2024-11-15T04:08:30.944+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.t.internal.TransactionImpl         : committing
+2024-11-15T04:08:30.944+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Processing flush-time cascades
+2024-11-15T04:08:30.944+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Dirty checking collections
+2024-11-15T04:08:30.946+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Flushed: 0 insertions, 0 updates, 0 deletions to 21 objects
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.h.e.i.AbstractFlushingEventListener    : Flushed: 0 (re)creations, 0 updates, 0 removals to 0 collections
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : Listing entities:
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T14:17:55.315283, chatId=133, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T14:17:55.315283}
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:48:55.331168, chatId=132, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=양일 매진, chatIsSend=true, updatedAt=2024-11-13T13:48:55.331168}
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:46:01.945667, chatId=131, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:46:01.945667}
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:45:28.613276, chatId=130, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:45:28.613276}
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:03:14.589350, chatId=137, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=ㅇ, chatIsSend=false, updatedAt=2024-11-13T20:03:14.589350}
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:03:14.534188, chatId=136, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:03:14.534188}
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:14:18.606391, chatId=141, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:14:18.606391}
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:04:23.283998, chatId=140, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:04:23.283998}
+2024-11-15T04:08:30.947+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:04:18.123397, chatId=139, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:04:18.123397}
+2024-11-15T04:08:30.948+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:03:32.228058, chatId=138, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:03:32.228058}
+2024-11-15T04:08:30.948+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-14T18:01:01.943382, chatId=145, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=흥 난 자러 간다 빠이, chatIsSend=true, updatedAt=2024-11-14T18:01:01.943382}
+2024-11-15T04:08:30.948+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T20:14:28.448135, chatId=142, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T20:14:28.448135}
+2024-11-15T04:08:30.948+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-14T23:42:40.207342, chatId=147, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=true, chatContent=잘 주무세요, 김환자님! 편안한 밤 되시길 바래요., chatIsSend=false, updatedAt=2024-11-14T23:49:53.911301}
+2024-11-15T04:08:30.948+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-14T23:42:36.110951, chatId=146, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=흥 난 자러 간다 빠이, chatIsSend=true, updatedAt=2024-11-14T23:42:36.110951}
+2024-11-15T04:08:30.948+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-09T15:03:40.211696, chatId=125, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕 안녕, chatIsSend=true, updatedAt=2024-11-09T15:03:40.211696}
+2024-11-15T04:08:30.948+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:44:54.592799, chatId=129, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:44:54.592799}
+2024-11-15T04:08:30.949+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.patient.entity.Patient{createdAt=2024-11-07T06:34:18.259453, patientName=김환자, pyeoningSpecial=string, patientId=5, doctorId=<uninitialized>, patientGender=FEMALE, patientBirth=2024-12-12, patientEmail=hjnee222@gmail.com, pyeoningPrompt=이 환자는 불안장애가 심하기 때문에 불안해지지 않도록 도와주어야 합니다.., pyeoningDisease=string, patientCode=1FTDULI3, updatedAt=2024-11-12T11:30:13.190524}
+2024-11-15T04:08:30.949+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:41:50.556416, chatId=128, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:41:50.556416}
+2024-11-15T04:08:30.949+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-13T13:40:12.640150, chatId=127, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕, chatIsSend=true, updatedAt=2024-11-13T13:40:12.640150}
+2024-11-15T04:08:30.949+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.chat.entity.Chat{createdAt=2024-11-09T15:03:43.538067, chatId=126, patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, sessionEnd=false, chatContent=안녕하세요, 김환자님. 오늘은 어떤 계획을 가지고 계신가요?, chatIsSend=false, updatedAt=2024-11-09T15:03:43.538067}
+2024-11-15T04:08:30.949+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.hibernate.internal.util.EntityPrinter  : com.hsu.pyeoning.domain.summary.entity.Summary{createdAt=2024-11-15T04:08:30.899574, summaryContent=환자는 대화 내용이 부족하고, 반복적으로 '안녕'이라는 인사만을 하였습니다. 이외에 특정한 감정 상태나 고민, 증상을 나타내는 내용이 없습니다. 또한, '양일 매진'이라는 표현을 사용하였지만, 그 의미를 파악하기 어려웠습니다. 이후에 '흥 난 자러 간다 빠이'라고 말하며 대화를 종료하였습니다. 이를 통해 환자가 피곤함을 느꼈을 가능성이 있음을 추측할 수 있습니다. 다음 상담 시, 환자의 이러한 반복적인 행동 패턴과 그에 대한 이유, 그리고 '양일 매진'이라는 표현의 의미 등에 대해 더욱 자세히 이야기해보는 것이 필요해 보입니다., patient=com.hsu.pyeoning.domain.patient.entity.Patient#5, summaryId=4, updatedAt=2024-11-15T04:08:30.899574}
+2024-11-15T04:08:30.968+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2024-11-15T04:08:30.977+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2024-11-15T04:08:30.978+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [com.hsu.pyeoning.global.response.CustomApiResponse@228e511c]
+2024-11-15T04:08:30.986+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2024-11-15T04:08:30.986+09:00 DEBUG 49270 --- [pyeoning] [http-nio-80-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2024-11-15T04:08:48.661+09:00 DEBUG 49270 --- [pyeoning] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Pool stats (total=10, active=0, idle=10, waiting=0)
+2024-11-15T04:08:48.664+09:00 DEBUG 49270 --- [pyeoning] [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Fill pool skipped, pool has sufficient level or currently being filled.

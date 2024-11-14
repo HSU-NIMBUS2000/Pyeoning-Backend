@@ -43,7 +43,7 @@ public class ChatController {
         return chatService.processChatMessage(chatMessageRequestDTO);
     }
 
-    // 세션 종료
+    // 세션 종료 (body로 token 받기)
     @PostMapping("/endSession")
     public ResponseEntity<CustomApiResponse<?>> endChatSession() {
         return chatService.endSessionForPatient();
