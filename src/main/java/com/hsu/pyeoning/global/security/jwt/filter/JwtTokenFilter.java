@@ -36,15 +36,12 @@ public class JwtTokenFilter extends GenericFilterBean {
         // 요청을 ContentCachingRequestWrapper로 감싸서 여러 번 읽을 수 있게 함
         ContentCachingRequestWrapper cachingRequest = new ContentCachingRequestWrapper(request);
 
-        // 1. 헤더에서 토큰 확인
-        String token = jwtTokenProvider.resolveToken(cachingRequest);
-
-        // 2. 헤더에 토큰이 없으면 바디에서 토큰을 확인
         // 바디에서 토큰을 확인할 특정 경로들 (세션종료, 요약보고서 생성
         boolean shouldReadBodyForToken = path.equals("/api/chat/endSession") || path.equals("/api/summary/create");
+        String token = "";
 
         // 특정 경로에 대해서만 바디에서 토큰 확인
-        if (token == null && shouldReadBodyForToken) {
+        if (shouldReadBodyForToken) {
             String body = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(body);
@@ -52,7 +49,12 @@ public class JwtTokenFilter extends GenericFilterBean {
             if (!tokenNode.isMissingNode()) {
                 token = tokenNode.asText();
             }
+        } else {
+            // 헤더에서 토큰 확인
+            token = jwtTokenProvider.resolveToken(cachingRequest);
+
         }
+
         // log
         System.out.println("token: " + token);
 
