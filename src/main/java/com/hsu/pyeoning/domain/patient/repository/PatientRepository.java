@@ -13,4 +13,7 @@ import java.util.Optional;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
     Optional<Patient> findByPatientCode(String patientCode);
     Page<Patient> findByDoctorId(Doctor doctor, Pageable pageable);
+    Page<Patient> findByDoctorIdAndPyeoningDiseaseContaining(Doctor doctor, String disease, Pageable pageable);
+    Page<Patient> findByDoctorIdAndPatientNameContaining(Doctor doctor, String name, Pageable pageable);
+    Page<Patient> findByDoctorIdAndPyeoningSpecialContaining(Doctor doctor, String special, Pageable pageable);
 }

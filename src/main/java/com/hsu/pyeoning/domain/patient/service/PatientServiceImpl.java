@@ -166,7 +166,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public ResponseEntity<CustomApiResponse<?>> getPatientList(int page, int size) {
+    public ResponseEntity<CustomApiResponse<?>> getPatientList(int page, int size, String category, String keyword) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String doctorLicenseStr = authentication.getName();
         Long doctorLicense = Long.valueOf(doctorLicenseStr);
@@ -176,8 +176,34 @@ public class PatientServiceImpl implements PatientService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomApiResponse<>(404, null, "의사 정보를 찾을 수 없습니다."));
         }
+
         PageRequest pageRequest = PageRequest.of(page - 1, size);
-        Page<Patient> patientPage = patientRepository.findByDoctorId(doctor, pageRequest);
+        Page<Patient> patientPage;
+
+        // 카테고리와 키워드가 없는 경우 전체 리스트 반환
+        if (category == null || keyword == null) {
+            patientPage = patientRepository.findByDoctorId(doctor, pageRequest);
+        } else {
+            // 카테고리별 검색
+            switch (category) {
+                case "disease":
+                    patientPage = patientRepository.findByDoctorIdAndPyeoningDiseaseContaining(
+                            doctor, keyword, pageRequest);
+                    break;
+                case "name":
+                    patientPage = patientRepository.findByDoctorIdAndPatientNameContaining(
+                            doctor, keyword, pageRequest);
+                    break;
+                case "special":
+                    patientPage = patientRepository.findByDoctorIdAndPyeoningSpecialContaining(
+                            doctor, keyword, pageRequest);
+                    break;
+                default:
+                    return ResponseEntity.badRequest()
+                            .body(new CustomApiResponse<>(400, null, "잘못된 카테고리입니다."));
+            }
+        }
+
         if (patientPage.hasContent()) {
             List<PatientListDto> patients = patientPage.getContent().stream()
                     .map(patient -> {
@@ -192,19 +218,18 @@ public class PatientServiceImpl implements PatientService {
                         );
                     })
                     .collect(Collectors.toList());
-            CustomApiResponse<List<PatientListDto>> response = new CustomApiResponse<>(
+            
+            return ResponseEntity.ok(new CustomApiResponse<>(
                     HttpStatus.OK.value(),
                     patients,
                     "환자 목록 조회에 성공했습니다."
-            );
-            return ResponseEntity.ok(response);
+            ));
         } else {
-            CustomApiResponse<?> response = new CustomApiResponse<>(
+            return ResponseEntity.ok(new CustomApiResponse<>(
                     HttpStatus.OK.value(),
                     null,
                     "환자 목록 조회에 성공했습니다. 환자 목록이 없습니다."
-            );
-            return ResponseEntity.ok(response);
+            ));
         }
     }
 

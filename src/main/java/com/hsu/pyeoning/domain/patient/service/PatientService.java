@@ -11,7 +11,7 @@ public interface PatientService {
     ResponseEntity<CustomApiResponse<?>> registerPatient(PatientRegisterDto dto);
     ResponseEntity<CustomApiResponse<?>> patientLogin(PatientLoginDto dto);
     ResponseEntity<CustomApiResponse<?>> modifyPrompt(Long patientId, ModifyPromptDto dto);
-    ResponseEntity<CustomApiResponse<?>> getPatientList(int page, int size);
+    ResponseEntity<CustomApiResponse<?>> getPatientList(int page, int size, String category, String keyword);
     ResponseEntity<CustomApiResponse<?>> getPatientDetail(Long patientId);
     ResponseEntity<CustomApiResponse<?>> getDoctorInfo();
 }
