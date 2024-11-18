@@ -37,9 +37,11 @@ public class PatientController {
 
     @GetMapping("/list")
     public ResponseEntity<CustomApiResponse<?>> getPatientList(
-            @RequestParam(defaultValue = "1") @Min(1) int page,
-            @RequestParam(defaultValue = "10") @Min(1) int size) {
-        return patientService.getPatientList(page, size);
+            @RequestParam(name = "page", defaultValue = "1") @Min(1) int page,
+            @RequestParam(name = "size", defaultValue = "10") @Min(1) int size,
+            @RequestParam(name = "category", required = false) String category,
+            @RequestParam(name = "keyword", required = false) String keyword) {
+        return patientService.getPatientList(page, size, category, keyword);
     }
 
     @GetMapping("/{patientId}/detail")
