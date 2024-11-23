@@ -55,7 +55,7 @@ public class PatientController {
     }
 
     @GetMapping("/{patientId}/riskLevels")
-    public ResponseEntity<CustomApiResponse<?>> getPatientRiskLevels(@PathVariable Long patientId) {
+    public ResponseEntity<CustomApiResponse<?>> getPatientRiskLevels(@PathVariable("patientId") Long patientId) {
         return patientService.getPatientRiskLevels(patientId);
     }
 }

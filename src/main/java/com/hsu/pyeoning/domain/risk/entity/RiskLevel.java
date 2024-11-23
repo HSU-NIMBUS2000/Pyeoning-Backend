@@ -24,7 +24,7 @@ public class RiskLevel extends BaseEntity {
     private Patient patient;
 
     @Column(nullable = false)
-    private Integer riskLevel; // 1~5 단계
+    private int riskLevel; // 0~5 단계
 
     @Column(nullable = false)  
     private String description; // 위험도 판단 근거나 설명

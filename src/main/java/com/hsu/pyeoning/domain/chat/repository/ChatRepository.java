@@ -34,9 +34,9 @@ public interface ChatRepository extends JpaRepository<Chat, Long> {
        )
        ORDER BY c.createdAt ASC
        """)
-    List<Chat> findChatHistoryBetweenSessions(Long patientId);
+    List<Chat> findChatHistoryBetweenSessions(@Param("patientId") Long patientId);
 
     // 해당 환자의 최신 chat 레코드의 session_end 상태 가져오기
     @Query("SELECT c.sessionEnd FROM Chat c WHERE c.patient.id = :patientId ORDER BY c.createdAt DESC LIMIT 1")
-    Boolean isLatestChatSessionEnded(Long patientId);
+    Boolean isLatestChatSessionEnded(@Param("patientId") Long patientId);
 }
