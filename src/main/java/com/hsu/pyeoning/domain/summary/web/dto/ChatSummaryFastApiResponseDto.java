@@ -1,12 +1,7 @@
 package com.hsu.pyeoning.domain.summary.web.dto;
 
-import com.hsu.pyeoning.domain.chat.web.dto.ChatMessageFastApiResponseDto;
-import com.hsu.pyeoning.global.api.dto.ChatHistory;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @EqualsAndHashCode(callSuper=false) // warning 해결 : 상위 클래스 필드 제외
 @Data
@@ -18,5 +13,8 @@ public class ChatSummaryFastApiResponseDto {
     @Data
     public static class DataContent {
         private String summary;
+
+        //private int riskLevel;        // 위험도 (1-5)
+        //private String riskReason;    // 위험도 평가 근거
     }
 }

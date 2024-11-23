@@ -14,4 +14,5 @@ public interface PatientService {
     ResponseEntity<CustomApiResponse<?>> getPatientList(int page, int size, String category, String keyword);
     ResponseEntity<CustomApiResponse<?>> getPatientDetail(Long patientId);
     ResponseEntity<CustomApiResponse<?>> getDoctorInfo();
+    ResponseEntity<CustomApiResponse<?>> getPatientRiskLevels(Long patientId);
 }

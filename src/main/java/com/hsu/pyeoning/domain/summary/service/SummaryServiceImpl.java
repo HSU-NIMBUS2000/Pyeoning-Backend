@@ -5,6 +5,8 @@ import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
+import com.hsu.pyeoning.domain.risk.entity.RiskLevel;
+import com.hsu.pyeoning.domain.risk.repository.RiskLevelRepository;
 import com.hsu.pyeoning.domain.summary.entity.Summary;
 import com.hsu.pyeoning.domain.summary.repository.SummaryRepository;
 import com.hsu.pyeoning.domain.summary.web.dto.ChatSummaryFastApiRequestDto;
@@ -27,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Random;
 
 
 @Service
@@ -40,6 +43,7 @@ public class SummaryServiceImpl implements SummaryService {
     private final PatientRepository patientRepository;
     private final ChatRepository chatRepository;
     private final RestTemplate restTemplate;
+    private final RiskLevelRepository riskLevelRepository;
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> getPatientSummary(Long patientId) {
@@ -114,6 +118,27 @@ public class SummaryServiceImpl implements SummaryService {
                 ObjectMapper objectMapper = new ObjectMapper();
                 ChatSummaryFastApiResponseDto responseDto = objectMapper.readValue(response.getBody(), ChatSummaryFastApiResponseDto.class);
                 summaryContent = responseDto.getData().getSummary(); // 요약 내용 가져오기
+
+                /////////////////////////////////////////////////////////////////////////////////
+                // 임시로 랜덤 위험도 생성 (실제로는 AI 서버에서 받아야 함)
+                Random random = new Random();
+                int randomRiskLevel = random.nextInt(5) + 1;
+                
+                // 위험도 정보 저장
+                RiskLevel riskLevel = RiskLevel.builder()
+                        .patient(patient)
+                        .riskLevel(randomRiskLevel)
+                        .description("AI 분석 기반 위험도 평가") // 실제로는 AI 서버에서 받은 설명 사용해도 됨
+                        .build();
+                riskLevelRepository.save(riskLevel);
+                /////////////////////////////////////////////////////////////////////////////////
+                // // AI 서버에서 받은 위험도 정보로 저장
+                // RiskLevel riskLevel = RiskLevel.builder()
+                //         .patient(patient)
+                //         .riskLevel(responseDto.getData().getRiskLevel())
+                //         .description(responseDto.getData().getRiskReason())
+                //         .build();       
+                // riskLevelRepository.save(riskLevel);
             } else {
                 // 502 : 응답 상태 코드가 성공 범위가 아님
                 return ResponseEntity.status(HttpStatus.BAD_GATEWAY)

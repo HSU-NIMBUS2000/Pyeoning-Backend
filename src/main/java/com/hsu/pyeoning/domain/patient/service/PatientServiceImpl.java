@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.hsu.pyeoning.domain.doctor.entity.Doctor;
 import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
@@ -28,6 +29,9 @@ import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientListDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
+import com.hsu.pyeoning.domain.risk.entity.RiskLevel;
+import com.hsu.pyeoning.domain.risk.repository.RiskLevelRepository;
+import com.hsu.pyeoning.domain.risk.web.dto.RiskLevelResponseDto;
 import com.hsu.pyeoning.global.response.CustomApiResponse;
 import com.hsu.pyeoning.global.security.jwt.JwtTokenProvider;
 
@@ -43,6 +47,7 @@ public class PatientServiceImpl implements PatientService {
     private final JwtTokenProvider jwtTokenProvider;
     private final ChatRepository chatRepository;
     private final JavaMailSender mailSender;
+    private final RiskLevelRepository riskLevelRepository;
 
     @Transactional
     @Override
@@ -292,6 +297,24 @@ public class PatientServiceImpl implements PatientService {
         return ResponseEntity.ok(new CustomApiResponse<>(200, doctorInfo, "의사 정보 조회에 성공했습니다."));
     }
 
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> getPatientRiskLevels(Long patientId) {
+        Patient patient = patientRepository.findById(patientId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "환자를 찾을 수 없습니다."));
+
+        List<RiskLevel> riskLevels = riskLevelRepository.findTop10ByPatientOrderByCreatedAtDesc(patient);
+
+        List<RiskLevelResponseDto> response = riskLevels.stream()
+                .map(risk -> RiskLevelResponseDto.builder()
+                        .riskLevel(risk.getRiskLevel())
+                        .createdAt(risk.localDateToString())
+                        .description(risk.getDescription())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(CustomApiResponse.createSuccess(200, response, "환자 위험도 조회에 성공했습니다."));
+    }
+    
     private LocalDate convertToLocalDateViaSqlDate(java.util.Date dateToConvert) {
         if (dateToConvert == null) {
             return null;
@@ -317,7 +340,6 @@ public class PatientServiceImpl implements PatientService {
         return sb.toString();
     }
 
-    // 이메일 전송 메소드
     private void sendPatientCodeEmail(String email, String patientCode) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
