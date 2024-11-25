@@ -14,5 +14,5 @@ import java.time.LocalDateTime;
 public class SummaryDto {
     private Long summaryId;
     private String summaryContent;
-    private LocalDateTime createdAt;
+    private String createdAt;
 }

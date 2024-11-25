@@ -34,7 +34,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -54,25 +56,38 @@ public class SummaryServiceImpl implements SummaryService {
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> getPatientSummary(Long patientId) {
-        String currentUserId = authenticationUserUtils.getCurrentUserId();
+        String doctorId = authenticationUserUtils.getCurrentUserId();
 
-        // 유효한 사용자 확인
-        if (currentUserId == null) {
+        // 401 : 유효하지 않은 의사 Id
+        if (doctorId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(CustomApiResponse.createFailWithout(401, "유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
+                    .body(CustomApiResponse.createFailWithout(401, "유효하지 않은 토큰이거나, 해당 ID에 해당하는 의사가 존재하지 않습니다."));
         }
 
-        // 요약보고서 조회
-        Summary summary = summaryRepository.findByPatient_PatientId(patientId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "요약보고서 조회에 실패했습니다."));
+        // 404 : 존재하지 않는 환자
+        Optional<Patient> foundPatient = patientRepository.findById(patientId);
+        if (foundPatient.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(CustomApiResponse.createFailWithout(404, "해당 ID에 해당하는 환자가 존재하지 않습니다."));
+        }
+        Patient patient = foundPatient.get();
 
-        SummaryDto dto = new SummaryDto(
-                summary.getSummaryId(),
-                summary.getSummaryContent(),
-                summary.getCreatedAt()
-        );
+        // patientId로 모든 summary 조회
+        List<Summary> summaries = summaryRepository.findAllByPatient(patient);
 
-        return ResponseEntity.ok(CustomApiResponse.createSuccess(200, dto, "요약보고서 조회에 성공했습니다."));
+        // response
+        List<SummaryDto> dtos = new ArrayList<>();
+        for (Summary summary : summaries) {
+            SummaryDto dto = new SummaryDto(
+                    summary.getSummaryId(),
+                    summary.getSummaryContent(),
+                    summary.localDateToString()
+            );
+            dtos.add(dto);
+        }
+
+        // 200 : 요약 보고서 조회 성공
+        return ResponseEntity.ok(CustomApiResponse.createSuccess(200, dtos, "요약보고서 조회에 성공했습니다."));
     }
 
     // 요약 보고서 생성
