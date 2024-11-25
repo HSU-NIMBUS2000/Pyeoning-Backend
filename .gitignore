@@ -42,3 +42,6 @@ out/
 
 # Ignore VS Code specific files and directories
 .vscode/
+
+# Ignore log files
+app.log
