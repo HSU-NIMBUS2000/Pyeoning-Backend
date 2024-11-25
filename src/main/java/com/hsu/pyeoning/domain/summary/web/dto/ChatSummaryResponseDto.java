@@ -9,4 +9,6 @@ public class ChatSummaryResponseDto {
     private Long summaryId;
     private String summaryContent;
     private String createdAt; // ex. 2024.11.06
+//    private int riskLevel;
+//    private String description;
 }

@@ -87,10 +87,6 @@ public class SummaryServiceImpl implements SummaryService {
 
         // 환자의 해당 세션동안 대화한 채팅 기록 가져오기
         List<Chat> chatHistory = chatRepository.findChatHistoryBetweenSessions(patient.getPatientId());
-//        System.out.println("chatHistory 출력");
-//        for (Chat chat : chatHistory) {
-//            System.out.println(chat.getChatId());
-//        }
 
         // 409 : 세션 종료 이후 요약보고서 생성 가능
         Boolean isSessionEnded = chatRepository.isLatestChatSessionEnded(patient.getPatientId());
@@ -100,87 +96,80 @@ public class SummaryServiceImpl implements SummaryService {
         }
 
         // FastAPI - 요청 DTO 빌드
-        ChatSummaryFastApiRequestDto requestDto = ChatSummaryFastApiRequestDto.builder()
+        ChatSummaryFastApiRequestDto summaryRequestDto = ChatSummaryFastApiRequestDto.builder()
                 .disease(disease)
-                .chats(chatHistory)  // List<Chat>을 ChatSummaryFastApiRequestDto에 전달하면 자동 변환됨
+                .chats(chatHistory)
                 .build();
 
-        // FastAPI - 엔드포인트 설정
-        String fastApiEndpoint = fastApiUrl + "/api/doctor-ai/summarize";
-        String summaryContent = null;
+        // 요약 API 호출
+        String fastApiSummaryEndpoint = fastApiUrl + "/api/doctor-ai/analyze";
+        ChatSummaryFastApiResponseDto summaryResponseDto;
 
         try {
-            // FastAPI - 서버에 POST 요청 전송
-            ResponseEntity<String> response = restTemplate.postForEntity(fastApiEndpoint, requestDto, String.class);
-
-            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-                // FastAPI - 응답 JSON 파싱
-                ObjectMapper objectMapper = new ObjectMapper();
-                ChatSummaryFastApiResponseDto responseDto = objectMapper.readValue(response.getBody(), ChatSummaryFastApiResponseDto.class);
-                summaryContent = responseDto.getData().getSummary(); // 요약 내용 가져오기
-
-                /////////////////////////////////////////////////////////////////////////////////
-                // 임시로 랜덤 위험도 생성 (실제로는 AI 서버에서 받아야 함)
-                Random random = new Random();
-                int randomRiskLevel = random.nextInt(5) + 1;
-                
-                // 위험도 정보 저장
-                RiskLevel riskLevel = RiskLevel.builder()
-                        .patient(patient)
-                        .riskLevel(randomRiskLevel)
-                        .description("AI 분석 기반 위험도 평가") // 실제로는 AI 서버에서 받은 설명 사용해도 됨
-                        .build();
-                riskLevelRepository.save(riskLevel);
-                /////////////////////////////////////////////////////////////////////////////////
-                // // AI 서버에서 받은 위험도 정보로 저장
-                // RiskLevel riskLevel = RiskLevel.builder()
-                //         .patient(patient)
-                //         .riskLevel(responseDto.getData().getRiskLevel())
-                //         .description(responseDto.getData().getRiskReason())
-                //         .build();       
-                // riskLevelRepository.save(riskLevel);
-            } else {
-                // 502 : 응답 상태 코드가 성공 범위가 아님
-                return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                        .body(CustomApiResponse.createFailWithout(502, "AI 서버와의 통신에 실패했습니다. 응답 코드가 성공 범위가 아닙니다."));
-            }
-
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            // 502 : AI 서버와의 통신 실패
+            summaryResponseDto = sendPostRequest(fastApiSummaryEndpoint, summaryRequestDto, ChatSummaryFastApiResponseDto.class);
+        } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                    .body(CustomApiResponse.createFailWithout(502, "AI 서버와의 통신 중 오류 발생: " + e.getMessage()));
-        } catch (ResourceAccessException e) {
-            // 504 : AI 서버 시간 초과
-            return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT)
-                    .body(CustomApiResponse.createFailWithout(504, "AI 서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해 주세요."));
-        } catch (Exception e) {
-            // 500 : JSON 파싱 오류 발생 등 기타 예외
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(CustomApiResponse.createFailWithout(500, "응답 파싱 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."));
+                    .body(CustomApiResponse.createFailWithout(502, e.getMessage()));
         }
 
-        // 400 : 충분한 대화 내용 필요 (summaryContent가 빈칸인 경우)
-        if (summaryContent.isBlank()) {
+        // 400 : 충분한 대화 내용 필요
+        if (summaryResponseDto.getData().getSummary().isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(CustomApiResponse.createFailWithout(400, "정확한 분석을 위해 충분한 양의 대화 내용이 필요합니다."));
         }
 
-        // 요약 보고서 save
+        int risk_level = summaryResponseDto.getData().getRiskLevel();
+        String description = summaryResponseDto.getData().getRiskReason();
+
+        // RiskLevel save
+        RiskLevel riskLevel = RiskLevel.builder()
+                .patient(patient)
+                .riskLevel(risk_level)
+                .description(description)
+                .build();
+        riskLevelRepository.save(riskLevel);
+
+        // Summary save
         Summary summary = Summary.builder()
                 .patient(patient)
-                .summaryContent(summaryContent)
+                .summaryContent(summaryResponseDto.getData().getSummary())
                 .build();
         summaryRepository.save(summary);
 
-        // 요약 보고서 데이터 가공
+        // response 데이터 가공
         ChatSummaryResponseDto data = ChatSummaryResponseDto.builder()
                 .summaryId(summary.getSummaryId())
-                .summaryContent(summaryContent)
-                .createdAt(summary.localDateToString()) // ex. 2024.11.06"
+                .summaryContent(summary.getSummaryContent())
+                .createdAt(summary.localDateToString()) // ex. 2024.11.06
+//                .riskLevel(risk_level)
+//                .description(description)
                 .build();
 
         // 200 : 요약 보고서 생성 성공
         return ResponseEntity.ok(CustomApiResponse.createSuccess(200, data, "요약 보고서가 성공적으로 생성되었습니다."));
     }
 
+    // fastAPI 통신 요청 처리 메서드
+    private <T> T sendPostRequest(String url, Object request, Class<T> responseType) {
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
+
+            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                // JSON 파싱
+                ObjectMapper objectMapper = new ObjectMapper();
+                return objectMapper.readValue(response.getBody(), responseType);
+            } else {
+                throw new HttpClientErrorException(response.getStatusCode(), "응답 상태 코드가 성공 범위가 아닙니다.");
+            }
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            throw new RuntimeException("AI 서버와의 통신 중 오류 발생: " + e.getMessage(), e);
+        } catch (ResourceAccessException e) {
+            throw new RuntimeException("AI 서버 응답 시간이 초과되었습니다.", e);
+        } catch (Exception e) {
+            throw new RuntimeException("응답 파싱 중 오류가 발생했습니다.", e);
+        }
+    }
+
+
 }
+
