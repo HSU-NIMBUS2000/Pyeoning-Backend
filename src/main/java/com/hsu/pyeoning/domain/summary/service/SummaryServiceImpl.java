@@ -3,6 +3,9 @@ package com.hsu.pyeoning.domain.summary.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hsu.pyeoning.domain.chat.entity.Chat;
 import com.hsu.pyeoning.domain.chat.repository.ChatRepository;
+import com.hsu.pyeoning.domain.coolsms.service.CoolsmsService;
+import com.hsu.pyeoning.domain.doctor.entity.Doctor;
+import com.hsu.pyeoning.domain.doctor.repository.DoctorRepository;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.domain.risk.entity.RiskLevel;
@@ -19,6 +22,7 @@ import com.hsu.pyeoning.global.security.jwt.util.AuthenticationUserUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,8 +32,9 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 
 @Service
@@ -44,6 +49,8 @@ public class SummaryServiceImpl implements SummaryService {
     private final ChatRepository chatRepository;
     private final RestTemplate restTemplate;
     private final RiskLevelRepository riskLevelRepository;
+    private final DoctorRepository doctorRepository;
+    private final CoolsmsService coolsmsService;
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> getPatientSummary(Long patientId) {
@@ -120,6 +127,14 @@ public class SummaryServiceImpl implements SummaryService {
 
         int risk_level = summaryResponseDto.getData().getRiskLevel();
         String description = summaryResponseDto.getData().getRiskReason();
+
+        // 위험도가 5(최고 레벨)인 경우 담당 의사에게 문자 발송
+        if (risk_level == 5) {
+            // 의사 전화번호에서 하이픈 지우기
+            String doctorPhone = patient.getDoctorId().getDoctorPhone().replace("-", "");
+            // 담당 의사에게 문자 발송
+            coolsmsService.sendSms(doctorPhone, patient.getPatientName(), patient.getPyeoningDisease(), description);
+        }
 
         // RiskLevel save
         RiskLevel riskLevel = RiskLevel.builder()
