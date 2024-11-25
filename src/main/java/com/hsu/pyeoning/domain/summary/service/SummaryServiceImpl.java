@@ -35,6 +35,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -54,17 +55,25 @@ public class SummaryServiceImpl implements SummaryService {
 
     @Override
     public ResponseEntity<CustomApiResponse<?>> getPatientSummary(Long patientId) {
-        String currentUserId = authenticationUserUtils.getCurrentUserId();
+        String doctorId = authenticationUserUtils.getCurrentUserId();
 
-        // 유효한 사용자 확인
-        if (currentUserId == null) {
+        // 401 : 유요하지 않은 의사 Id
+        if (doctorId == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(CustomApiResponse.createFailWithout(401, "유효하지 않은 토큰이거나, 해당 ID에 해당하는 환자가 존재하지 않습니다."));
         }
 
-        // 요약보고서 조회
-        Summary summary = summaryRepository.findByPatient_PatientId(patientId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "요약보고서 조회에 실패했습니다."));
+        // 404 : 존재하지 않는 환자
+        Optional<Patient> foundPatient = patientRepository.findById(patientId);
+        if (foundPatient.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(CustomApiResponse.createFailWithout(404, "해당 ID에 해당하는 환자가 존재하지 않습니다."));
+        }
+        Patient patient = foundPatient.get();
+
+
+        // 404 : 요약보고서 조회 실패
+        Summary summary = summaryRepository.find
 
         SummaryDto dto = new SummaryDto(
                 summary.getSummaryId(),
