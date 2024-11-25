@@ -23,7 +23,8 @@ public class Summary extends BaseEntity {
     private Patient patient; // 환자 FK
 
     @Lob
-    @Column(columnDefinition = "LONGTEXT")
+//    @Column(columnDefinition = "LONGTEXT")
+    @Column(length = 1000)
     private String summaryContent; // 요약보고서 내용
 
 }
