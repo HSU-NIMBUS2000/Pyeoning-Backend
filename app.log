@@ -2465,3 +2465,93 @@ com.hsu.pyeoning.global.exception.UnauthorizedException: 유효하지 않은 토
 2024-11-25T23:16:54.078+09:00  INFO 55501 --- [pyeoning] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2024-11-25T23:16:54.122+09:00  INFO 55501 --- [pyeoning] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2024-11-25T23:16:54.262+09:00  INFO 55501 --- [pyeoning] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-11-25T23:17:04.497+09:00  INFO 55617 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : Starting PyeoningApplication using Java 21.0.3 with PID 55617 (/Users/gimhyejin/Library/CloudStorage/OneDrive-한성대학교/문서/Projects/Pyeoning-Backend/build/classes/java/main started by gimhyejin in /Users/gimhyejin/Library/CloudStorage/OneDrive-한성대학교/문서/Projects/Pyeoning-Backend)
+2024-11-25T23:17:04.502+09:00  INFO 55617 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-11-25T23:17:06.115+09:00  INFO 55617 --- [pyeoning] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-25T23:17:06.255+09:00  INFO 55617 --- [pyeoning] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 130 ms. Found 5 JPA repository interfaces.
+2024-11-25T23:17:07.474+09:00  INFO 55617 --- [pyeoning] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 80 (http)
+2024-11-25T23:17:07.496+09:00  INFO 55617 --- [pyeoning] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-11-25T23:17:07.496+09:00  INFO 55617 --- [pyeoning] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-25T23:17:07.571+09:00  INFO 55617 --- [pyeoning] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-11-25T23:17:07.571+09:00  INFO 55617 --- [pyeoning] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2998 ms
+2024-11-25T23:17:07.783+09:00  INFO 55617 --- [pyeoning] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-25T23:17:07.923+09:00  INFO 55617 --- [pyeoning] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-11-25T23:17:08.003+09:00  INFO 55617 --- [pyeoning] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-11-25T23:17:08.453+09:00  INFO 55617 --- [pyeoning] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-25T23:17:08.486+09:00  INFO 55617 --- [pyeoning] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-11-25T23:17:09.266+09:00  INFO 55617 --- [pyeoning] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@69069866
+2024-11-25T23:17:09.272+09:00  INFO 55617 --- [pyeoning] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-11-25T23:17:09.368+09:00  WARN 55617 --- [pyeoning] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-11-25T23:17:09.371+09:00  WARN 55617 --- [pyeoning] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-11-25T23:17:10.903+09:00  INFO 55617 --- [pyeoning] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-25T23:17:11.282+09:00  INFO 55617 --- [pyeoning] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-25T23:17:11.678+09:00  INFO 55617 --- [pyeoning] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-11-25T23:17:12.973+09:00  WARN 55617 --- [pyeoning] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-11-25T23:17:13.007+09:00  INFO 55617 --- [pyeoning] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name myUserDetails
+2024-11-25T23:17:13.932+09:00  INFO 55617 --- [pyeoning] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 80 (http) with context path '/'
+2024-11-25T23:17:13.948+09:00  INFO 55617 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : Started PyeoningApplication in 10.466 seconds (process running for 11.409)
+2024-11-25T23:17:16.989+09:00  INFO 55617 --- [pyeoning] [http-nio-80-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-25T23:17:17.045+09:00  INFO 55617 --- [pyeoning] [http-nio-80-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-11-25T23:17:17.071+09:00  INFO 55617 --- [pyeoning] [http-nio-80-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 22 ms
+2024-11-25T23:22:35.220+09:00  INFO 55617 --- [pyeoning] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-11-25T23:22:35.227+09:00  INFO 55617 --- [pyeoning] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-11-25T23:22:35.301+09:00  INFO 55617 --- [pyeoning] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-11-25T23:22:50.448+09:00  INFO 56013 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : Starting PyeoningApplication using Java 21.0.3 with PID 56013 (/Users/gimhyejin/Library/CloudStorage/OneDrive-한성대학교/문서/Projects/Pyeoning-Backend/build/classes/java/main started by gimhyejin in /Users/gimhyejin/Library/CloudStorage/OneDrive-한성대학교/문서/Projects/Pyeoning-Backend)
+2024-11-25T23:22:50.456+09:00  INFO 56013 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-11-25T23:22:53.465+09:00  INFO 56013 --- [pyeoning] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-25T23:22:53.855+09:00  INFO 56013 --- [pyeoning] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 374 ms. Found 5 JPA repository interfaces.
+2024-11-25T23:22:55.971+09:00  INFO 56013 --- [pyeoning] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 80 (http)
+2024-11-25T23:22:56.058+09:00  INFO 56013 --- [pyeoning] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-11-25T23:22:56.059+09:00  INFO 56013 --- [pyeoning] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-25T23:22:56.264+09:00  INFO 56013 --- [pyeoning] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-11-25T23:22:56.266+09:00  INFO 56013 --- [pyeoning] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5699 ms
+2024-11-25T23:22:56.894+09:00  INFO 56013 --- [pyeoning] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-25T23:22:57.068+09:00  INFO 56013 --- [pyeoning] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-11-25T23:22:57.125+09:00  INFO 56013 --- [pyeoning] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-11-25T23:22:57.840+09:00  INFO 56013 --- [pyeoning] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-25T23:22:57.889+09:00  INFO 56013 --- [pyeoning] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-11-25T23:22:58.814+09:00  INFO 56013 --- [pyeoning] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1e0294a7
+2024-11-25T23:22:58.821+09:00  INFO 56013 --- [pyeoning] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-11-25T23:22:58.903+09:00  WARN 56013 --- [pyeoning] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-11-25T23:22:58.906+09:00  WARN 56013 --- [pyeoning] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-11-25T23:23:02.677+09:00  INFO 56013 --- [pyeoning] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-25T23:23:03.256+09:00  INFO 56013 --- [pyeoning] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-25T23:23:03.775+09:00  INFO 56013 --- [pyeoning] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-11-25T23:23:05.827+09:00  WARN 56013 --- [pyeoning] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-11-25T23:23:05.860+09:00  INFO 56013 --- [pyeoning] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name myUserDetails
+2024-11-25T23:23:06.945+09:00  INFO 56013 --- [pyeoning] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 80 (http) with context path '/'
+2024-11-25T23:23:06.964+09:00  INFO 56013 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : Started PyeoningApplication in 17.395 seconds (process running for 18.806)
+2024-11-25T23:23:24.049+09:00  INFO 56013 --- [pyeoning] [http-nio-80-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-25T23:23:24.052+09:00  INFO 56013 --- [pyeoning] [http-nio-80-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-11-25T23:23:24.061+09:00  INFO 56013 --- [pyeoning] [http-nio-80-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 9 ms
+2024-11-25T23:25:28.522+09:00  INFO 56013 --- [pyeoning] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-11-25T23:25:28.545+09:00  INFO 56013 --- [pyeoning] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-11-25T23:25:28.643+09:00  INFO 56013 --- [pyeoning] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-11-25T23:25:36.838+09:00  INFO 56079 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : Starting PyeoningApplication using Java 21.0.3 with PID 56079 (/Users/gimhyejin/Library/CloudStorage/OneDrive-한성대학교/문서/Projects/Pyeoning-Backend/build/classes/java/main started by gimhyejin in /Users/gimhyejin/Library/CloudStorage/OneDrive-한성대학교/문서/Projects/Pyeoning-Backend)
+2024-11-25T23:25:36.842+09:00  INFO 56079 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-11-25T23:25:38.326+09:00  INFO 56079 --- [pyeoning] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-11-25T23:25:38.450+09:00  INFO 56079 --- [pyeoning] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 111 ms. Found 5 JPA repository interfaces.
+2024-11-25T23:25:40.601+09:00  INFO 56079 --- [pyeoning] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 80 (http)
+2024-11-25T23:25:40.649+09:00  INFO 56079 --- [pyeoning] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-11-25T23:25:40.650+09:00  INFO 56079 --- [pyeoning] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2024-11-25T23:25:40.837+09:00  INFO 56079 --- [pyeoning] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-11-25T23:25:40.843+09:00  INFO 56079 --- [pyeoning] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3912 ms
+2024-11-25T23:25:41.319+09:00  INFO 56079 --- [pyeoning] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-11-25T23:25:41.431+09:00  INFO 56079 --- [pyeoning] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.3.Final
+2024-11-25T23:25:41.481+09:00  INFO 56079 --- [pyeoning] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-11-25T23:25:42.050+09:00  INFO 56079 --- [pyeoning] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-11-25T23:25:42.091+09:00  INFO 56079 --- [pyeoning] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-11-25T23:25:42.776+09:00  INFO 56079 --- [pyeoning] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@503a7990
+2024-11-25T23:25:42.780+09:00  INFO 56079 --- [pyeoning] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-11-25T23:25:42.854+09:00  WARN 56079 --- [pyeoning] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-11-25T23:25:42.856+09:00  WARN 56079 --- [pyeoning] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-11-25T23:25:45.110+09:00  INFO 56079 --- [pyeoning] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-11-25T23:25:45.629+09:00  INFO 56079 --- [pyeoning] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-11-25T23:25:46.148+09:00  INFO 56079 --- [pyeoning] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-11-25T23:25:47.520+09:00  WARN 56079 --- [pyeoning] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-11-25T23:25:47.565+09:00  INFO 56079 --- [pyeoning] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name myUserDetails
+2024-11-25T23:25:48.391+09:00  INFO 56079 --- [pyeoning] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 80 (http) with context path '/'
+2024-11-25T23:25:48.406+09:00  INFO 56079 --- [pyeoning] [main] com.hsu.pyeoning.PyeoningApplication     : Started PyeoningApplication in 12.201 seconds (process running for 12.914)
+2024-11-25T23:25:48.935+09:00  INFO 56079 --- [pyeoning] [http-nio-80-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-11-25T23:25:48.936+09:00  INFO 56079 --- [pyeoning] [http-nio-80-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-11-25T23:25:48.938+09:00  INFO 56079 --- [pyeoning] [http-nio-80-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms

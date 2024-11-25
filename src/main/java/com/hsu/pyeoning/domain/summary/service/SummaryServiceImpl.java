@@ -67,20 +67,13 @@ public class SummaryServiceImpl implements SummaryService {
         // 404 : 존재하지 않는 환자
         Optional<Patient> foundPatient = patientRepository.findById(patientId);
         if (foundPatient.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(CustomApiResponse.createFailWithout(404, "해당 ID에 해당하는 환자가 존재하지 않습니다."));
         }
         Patient patient = foundPatient.get();
 
-
         // patientId로 모든 summary 조회
         List<Summary> summaries = summaryRepository.findAllByPatient(patient);
-
-        // 404 : 요약보고서 조회 결과 없음
-        if (summaries.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(CustomApiResponse.createFailWithout(404, "해당 ID에 해당하는 요약 정보가 없습니다."));
-        }
 
         // response
         List<SummaryDto> dtos = new ArrayList<>();
