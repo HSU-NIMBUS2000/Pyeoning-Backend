@@ -13,8 +13,7 @@ public class ChatSummaryFastApiResponseDto {
     @Data
     public static class DataContent {
         private String summary;
-
-        //private int riskLevel;        // 위험도 (1-5)
-        //private String riskReason;    // 위험도 평가 근거
+        private int riskLevel;        // 위험도 (1-5)
+        private String riskReason;    // 위험도 평가 근거
     }
 }
