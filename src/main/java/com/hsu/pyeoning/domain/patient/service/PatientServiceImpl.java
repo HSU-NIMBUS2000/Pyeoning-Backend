@@ -26,6 +26,7 @@ import com.hsu.pyeoning.domain.doctor.web.dto.DoctorInfoDto;
 import com.hsu.pyeoning.domain.patient.entity.Patient;
 import com.hsu.pyeoning.domain.patient.repository.PatientRepository;
 import com.hsu.pyeoning.domain.patient.web.dto.ModifyPromptDto;
+import com.hsu.pyeoning.domain.patient.web.dto.PatientDetailDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientListDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientLoginDto;
 import com.hsu.pyeoning.domain.patient.web.dto.PatientRegisterDto;
@@ -260,15 +261,20 @@ public class PatientServiceImpl implements PatientService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomApiResponse<>(404, null, "해당 의사는 해당 환자의 담당 의사가 아닙니다."));
         }
+        
+        LocalDate birthDate = convertToLocalDateViaSqlDate(patient.getPatientBirth());
 
-        PatientListDto patientDetail = new PatientListDto(
-                patient.getPatientId(),
-                patient.getPatientName(),
-                patient.getPatientGender().name(),
-                patient.getPatientBirth().toString(),
-                calculateAge(convertToLocalDateViaSqlDate(patient.getPatientBirth())),
-                patient.getPyeoningSpecial()
-        );
+        PatientDetailDto patientDetail = new PatientDetailDto(
+            patient.getPatientId(),     // ID 추가
+            patient.getPatientName(),
+            patient.getPatientGender().name(),
+            patient.getPatientBirth().toString(),
+            calculateAge(birthDate),    // 나이 추가
+            patient.getPyeoningDisease(),
+            patient.getPyeoningPrompt(),
+            patient.getPyeoningSpecial()
+    );
+        
         return ResponseEntity.ok(new CustomApiResponse<>(200, patientDetail, "환자 상세 조회에 성공했습니다."));
     }
 
